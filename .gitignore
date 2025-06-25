@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Build directories
+**/build/*
+
+# opencv
+
+/opencv/
+
+# .vscode
+.vscode/
