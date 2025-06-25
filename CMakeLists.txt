@@ -11,12 +11,16 @@ find_package(OpenCV REQUIRED)
 # Include OpenCV directories
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+include_directories(${CMAKE_SOURCE_DIR}/inc)
+
 add_executable(FaceDetectionStarter
     src/main.cpp
     src/Game.cpp
-    inc/Game.hpp
+
 )
 
 target_link_libraries(FaceDetectionStarter ${OpenCV_LIBS})
 
 message(STATUS "Ensure 'haarcascade_frontalface_default.xml' is in the build/executable directory or update path in main.cpp.")
+
+
