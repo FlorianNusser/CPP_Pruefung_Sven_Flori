@@ -15,7 +15,8 @@ include_directories(${CMAKE_SOURCE_DIR}/inc)
 
 add_executable(FaceDetectionStarter
     src/main.cpp
-    src/Game.cpp
+    src/game.cpp
+    src/player.cpp
 
 )
 
