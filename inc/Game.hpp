@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 
-class Game 
+class Game
 {
 public:
     Game(const std::string& cascadePath);

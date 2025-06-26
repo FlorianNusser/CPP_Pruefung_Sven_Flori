@@ -17,6 +17,8 @@ add_executable(FaceDetectionStarter
     src/main.cpp
     src/game.cpp
     src/player.cpp
+    #src/shape.cpp
+    src/gui.cpp
 
 )
 
