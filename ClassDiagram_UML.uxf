@@ -1,13 +1,9 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>280</x><y>190</y><w>210</w><h>190</h></coordinates><panel_attributes>Shape
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>700</x><y>320</y><w>210</w><h>190</h></coordinates><panel_attributes>Shape
 --
 -m_color: string
 --
-#Operation(i: int): int
-/+AbstractOperation()/
---
-Responsibilities
--- Resp1
-*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>190</y><w>210</w><h>190</h></coordinates><panel_attributes>&lt;&lt;Circle&gt;&gt;
+- Resp1
+-Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1090</x><y>160</y><w>210</w><h>190</h></coordinates><panel_attributes>Circle
 --
 -id: Long
 _-ClassAttribute: Long_
@@ -17,27 +13,25 @@ _-ClassAttribute: Long_
 --
 Responsibilities
 -- Resp1
-*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>280</y><w>300</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;instanceOf&gt;&gt;</panel_attributes><additional_attributes>10;20;280;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>420</y><w>210</w><h>190</h></coordinates><panel_attributes>&lt;&lt;Rectangle&gt;&gt;
-Package::FatClass
-{Some Properties}
+*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>260</y><w>210</w><h>190</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instanceOf&gt;&gt;</panel_attributes><additional_attributes>10;170;190;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1110</x><y>540</y><w>210</w><h>190</h></coordinates><panel_attributes>Rectangle
 --
 -id: Long
-_-ClassAttribute: Long_
+
 --
 #Operation(i: int): int
 /+AbstractOperation()/
 --
 Responsibilities
 -- Resp1
-*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>290</y><w>260</w><h>270</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;instanceOf&gt;&gt;</panel_attributes><additional_attributes>10;10;240;250</additional_attributes></element><element><id>UMLClass</id><coordinates><x>220</x><y>550</y><w>210</w><h>110</h></coordinates><panel_attributes>&lt;&lt;Player&gt;&gt;
+*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>420</y><w>230</w><h>260</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;instanceOf&gt;&gt;</panel_attributes><additional_attributes>10;10;210;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>110</x><y>450</y><w>210</w><h>110</h></coordinates><panel_attributes>Player
 --
 - m_name: string
 - m_id: int
 --
 getName(): string
-getId(): int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>480</x><y>590</y><w>210</w><h>190</h></coordinates><panel_attributes>&lt;&lt;Spielmodus&gt;&gt;
+getId(): int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>110</x><y>130</y><w>210</w><h>190</h></coordinates><panel_attributes>Spielmodus
 --
 
 --
@@ -46,4 +40,25 @@ getId(): int</panel_attributes><additional_attributes></additional_attributes></
 --
 Responsibilities
 -- Resp1
-*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>380</y><w>100</w><h>30</h></coordinates><panel_attributes>SimpleClass</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>40</y><w>220</w><h>180</h></coordinates><panel_attributes>GUI
+--
+-m_textcolor:  Enum Class Textcolor
+-m_score: int
+-m_playername: string
+-m_playmode: Enum Class Playmode
+--
++getTextcolor()
++getScore()
++getPlayername()
++setScore()
++setPlaymode()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>550</y><w>310</w><h>140</h></coordinates><panel_attributes>Game
+--
+-cap: VideoCapture
+-faceCascade: CascadeClassifier
+&lt;&lt;constant&gt;&gt; -windowName: string = "Face Detection"
+-frameWidth: int
+-frameHeight: int
+--
++initialize(): bool
++run(): void
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
