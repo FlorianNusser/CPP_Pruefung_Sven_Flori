@@ -8,6 +8,11 @@ Player::Player(std::string name): m_name(name)
     m_id++;
 }
 
+Player::~Player()
+{
+}
+
+
 int Player::getId()
 {
     return m_id;
