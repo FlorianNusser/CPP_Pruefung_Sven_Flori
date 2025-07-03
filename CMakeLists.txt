@@ -19,6 +19,7 @@ add_executable(FaceDetectionStarter
     src/player.cpp
     #src/shape.cpp
     src/gui.cpp
+    src/dodgeTheBalls.cpp
 
 )
 

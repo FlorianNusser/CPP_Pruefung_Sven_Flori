@@ -34,7 +34,7 @@ int main() {
             playmode = Playmode::DodgeTheBalls;
             break;
     }
-    Gui gui(Color::White, name, Playmode::DodgeTheBalls); // Standardwert für Playmode
+    Gui gui(Color::Black, name, Playmode::DodgeTheBalls); // Standardwert für Playmode
 
     std::cout << "Spielername: " << name << std::endl;
     std::cout << "Spielmodus: " << (playmode == Playmode::DodgeTheBalls ? "Dodge the Balls" : "Catch the Squares") << std::endl;

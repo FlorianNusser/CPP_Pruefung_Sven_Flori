@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include <iostream>
 
-Game::Game(const std::string& cascadePath) : frameWidth(0), frameHeight(0) {
+Game::Game(const std::string& cascadePath) : m_dodgeTheBalls(640, 480) { // Initialisiere DodgeTheBalls mit Standardgröße
     faceCascade.load(cascadePath);
 }
 
@@ -49,5 +49,17 @@ void Game::run() {
         cv::imshow(windowName, frame);
         int key = cv::waitKey(10);
         if (key == 27) break; // ESC to exit
+
+        //Dodge the Balls Game Logic
+        m_dodgeTheBalls.spawnBall();
+        m_dodgeTheBalls.updateBalls();
+        m_dodgeTheBalls.drawBalls(frame);
+        m_dodgeTheBalls.removeOffscreenBalls();
+
+        // Check for collisions with player rectangle (example, you need to define playerRect)
+        /*if (m_dodgeTheBalls.checkCollision(cv::Rect(100, 100, 50, 50))) {
+            std::cout << "Collision detected!" << std::endl;
+            // Handle collision (e.g., game over or score deduction)
+        }*/
     }
 }
