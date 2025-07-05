@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 #include "game.hpp"
+#include "gamemode.hpp"
 
 enum class Color{
     White,
@@ -14,10 +15,6 @@ enum class Color{
     Purple
 };
 
-enum class Playmode{
-DodgeTheBalls,
-CatchTheSquares
-};
 
 
 class Gui
