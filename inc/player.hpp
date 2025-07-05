@@ -5,14 +5,17 @@
 class Player
 {
 public:
-    Player(std::string name);
+    Player(std::string &name);
     virtual ~Player();
-    static int getId();
+    int getId() const;
+
+    void printProperties();
 protected:
 
 private:
     std::string m_name;
-    static int m_id;
+    int m_id;
+    static int idSetter;
 };
 
 
