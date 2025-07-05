@@ -1,8 +1,6 @@
 #ifndef DODGE_THE_BALLS_HPP
 #define DODGE_THE_BALLS_HPP
 
-#include <opencv2/opencv.hpp>
-
 
 #include <opencv2/opencv.hpp>
 #include <vector>

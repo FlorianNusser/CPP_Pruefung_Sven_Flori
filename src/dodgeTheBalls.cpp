@@ -1,5 +1,6 @@
 #include "dodgeTheBalls.hpp"
 #include <random>
+#include <algorithm>
 
 DodgeTheBalls::DodgeTheBalls(int width, int height)
     : m_width(width), m_height(height) {}
@@ -32,16 +33,26 @@ void DodgeTheBalls::drawBalls(cv::Mat& frame) const {
     }
 }
 
+
+
 bool DodgeTheBalls::checkCollision(const cv::Rect& playerRect) const {
     for (const auto& ball : m_balls) {
-        cv::Point2f center = ball.position;
-        float radius = ball.radius;
-        // Prüfe, ob der Mittelpunkt des Balls im Spielerrechteck liegt
-        if ((center.x > playerRect.x && center.x < playerRect.x + playerRect.width) &&
-            (center.y > playerRect.y && center.y < playerRect.y + playerRect.height)) {
+        // Konvertiere alle Werte zu float für Konsistenz
+        float rectX = static_cast<float>(playerRect.x);
+        float rectY = static_cast<float>(playerRect.y);
+        float rectWidth = static_cast<float>(playerRect.width);
+        float rectHeight = static_cast<float>(playerRect.height);
+
+        float closestX = std::max(rectX, std::min(ball.position.x, rectX + rectWidth));
+        float closestY = std::max(rectY, std::min(ball.position.y, rectY + rectHeight));
+
+        float distanceX = ball.position.x - closestX;
+        float distanceY = ball.position.y - closestY;
+        float distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+
+        if (distanceSquared < (ball.radius * ball.radius)) {
             return true;
         }
-        // Optional: genauere Kollisionserkennung (Kreis-Rechteck)
     }
     return false;
 }

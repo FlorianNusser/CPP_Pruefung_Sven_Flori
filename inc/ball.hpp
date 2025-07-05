@@ -6,7 +6,7 @@
 struct Ball {
   cv::Point2f pos;
   cv::Point2f vel;
-  float       radius;
+  float radius;
 
   Ball(cv::Point2f p, cv::Point2f v, float r)
     : pos(p), vel(v), radius(r) {}
