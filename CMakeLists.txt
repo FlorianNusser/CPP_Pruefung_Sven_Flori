@@ -17,12 +17,14 @@ add_executable(FaceDetectionStarter
     src/main.cpp
     src/game.cpp
     src/player.cpp
-    #src/shape.cpp
+    src/shape.cpp
     src/gui.cpp
     src/dodgeTheBalls.cpp
-
+    src/ball.cpp
+    src/drawShape.cpp
+    src/menu.cpp
+    src/gamemode.cpp
 )
-
 target_link_libraries(FaceDetectionStarter ${OpenCV_LIBS})
 
 message(STATUS "Ensure 'haarcascade_frontalface_default.xml' is in the build/executable directory or update path in main.cpp.")

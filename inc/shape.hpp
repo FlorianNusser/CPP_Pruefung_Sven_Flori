@@ -2,14 +2,19 @@
 #define SHAPE_HPP
 
 #include <iostream>
+#include <color.hpp>
 
-class shape
+class Shape
 {
 public:
-    shape::shape(std::string color);
-    virtual shape::~shape();
-private:
-    std::string m_color;
+    Shape();
+    virtual ~Shape();
+protected:
+    Color m_color;
+    int m_size;
+    int m_velocity;
+    int m_xPosition;
+    int m_yPosition;
 
 };
 
