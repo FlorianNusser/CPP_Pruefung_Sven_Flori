@@ -17,8 +17,10 @@ int main()
 
     Gamemode gamemode = menu.selectGamemode();
 
+
+
     menu.startGame();
-    //Gui gui(Color::Black, player.m_name, Playmode::DodgeTheBalls); // Standardwert für Playmode
+
 
     return 0;
 }

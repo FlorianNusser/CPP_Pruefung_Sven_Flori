@@ -1,19 +1,22 @@
-
 #include "game.hpp"
+#include "gui.hpp"
+#include "dodgeTheBalls.hpp"
+
 #include <iostream>
 #include <chrono> // for time control
 
 
 Game::Game(const std::string& cascadePath) : m_dodgeTheBalls(640, 480) 
 {
-    if (!faceCascade.load(cascadePath)) 
+    if (!faceCascade.load(cascadePath))
     {
         std::cerr << "Error loading cascade file!" << std::endl;
     }
 }
 
-Game::~Game() {
-    if (cap.isOpened()) 
+Game::~Game()
+{
+    if (cap.isOpened())
     {
         cap.release();
     }
@@ -22,7 +25,7 @@ Game::~Game() {
 
 bool Game::initialize() {
     cap.open(0);
-    if (!cap.isOpened()) 
+    if (!cap.isOpened())
     {
         std::cerr << "Error: Could not open camera." << std::endl;
         return false;
@@ -43,16 +46,21 @@ bool Game::initialize() {
     return true;
 }
 
-void Game::run() 
+void Game::run()
 {
-    if (!initialize()) return;
+
+    if (!initialize())
+    {
+        std::cerr << "Initialization failed." << std::endl;
+        return;
+    }
 
     cv::Mat frame;
     int spawnCounter = 0;
     const int SPAWN_INTERVAL = 30; // 1 ball all 30 frames
     bool gameOver = false;
 
-    while (!gameOver) 
+    while (!gameOver)
     {
         cap >> frame;
         if (frame.empty()) break;
@@ -94,7 +102,8 @@ void Game::run()
         }
 
         cv::imshow(windowName, frame);
-        if (cv::waitKey(10) == 27) break; // ESC
+        int key = cv::waitKey(10);
+        if (key == 27) break; // ESC to exit
     }
 }
 

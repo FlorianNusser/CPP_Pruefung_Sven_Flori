@@ -1,5 +1,7 @@
 #include "menu.hpp"
 #include "game.hpp"
+#include "gui.hpp"
+#include "gamemode.hpp"
 
 
 Player Menu::namePlayer()

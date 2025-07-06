@@ -3,6 +3,7 @@
 
 #include "dodgeTheBalls.hpp"
 
+
 #include <opencv2/opencv.hpp>
 #include <string>
 
@@ -23,4 +24,4 @@ private:
     DodgeTheBalls m_dodgeTheBalls;
 };
 
-#endif // GAME_H
+#endif // GAME_HPP
