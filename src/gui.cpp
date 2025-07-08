@@ -1,53 +1,59 @@
 #include "gui.hpp"
+#include <vector>
 
 Gui::Gui(Game& game, const std::string& cascadeFilePath, Playmode playmode)
-    :m_textcolor(Color::White), m_score(0), m_frameWidth(0), m_frameHeight(0)
+    :m_game(game), m_textcolor(Color::WHITE), m_score(0), m_frameWidth(0), m_frameHeight(0)
 {
     // Lädt "facaCascade" und überprüft, ob es erfolgreich war
-    if (!faceCascade.load(m_cascadeFilePath))
+    if (!faceCascade.load(cascadeFilePath))
     {
         std::cerr << "Error loading cascade file!" << std::endl;
     }
     //std::cout << "Gui Constructor called." << std::endl;
 }
 
-Gui::~Gui(){
-    if (cap.isOpened())
-    {
-        cap.release();
-    }
-    cv::destroyAllWindows();
-}
-
-bool Gui::initialize() {
-    cap.open(0);
-    if (!cap.isOpened())
-    {
-        std::cerr << "Error: Could not open camera." << std::endl;
-        return false;
-    }
-
-    m_frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
-    m_frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-
-    if (m_frameWidth == 0 || m_frameHeight == 0) {
-        m_frameWidth = 640;
-        m_frameHeight = 480;
-        cap.set(cv::CAP_PROP_FRAME_WIDTH, m_frameWidth);
-        cap.set(cv::CAP_PROP_FRAME_HEIGHT, m_frameHeight);
-    }
-
-    if (faceCascade.empty())
-    {
-        std::cerr << "Error: Could not load Haar cascade file." << std::endl;
-        return false;
-    }
-
-    cv::namedWindow(m_windowName, cv::WINDOW_AUTOSIZE);
-    return true;
-}
-
-std::string Gui::getCascadeFilePath() const
+Gui::~Gui()
 {
-    return m_cascadeFilePath;
+
+}
+
+
+
+// Aktualisiert das aktuelle Kamerabild und erkennt Gesichter
+std::vector<cv::Rect> Gui::updateFrame(cv::Mat& frame) {
+    if (frame.empty()) return {};
+
+
+    // Gesichtserkennung (kann für Spielerrechteck genutzt werden)
+    std::vector<cv::Rect> faces;
+    faceCascade.detectMultiScale(frame, faces, 1.1, 3, 0, cv::Size(60, 60));
+
+    // Zeichne erkannte Gesichter
+    for (const auto& face : faces) {
+        cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
+    }
+
+    // Hier könntest du weitere Spiellogik aufrufen, z.B. game.update(faces);
+
+
+    return faces;
+}
+
+
+// Zeichnet alle Bälle auf das übergebene Frame
+void Gui::drawBalls(cv::Mat& frame, std::vector<Ball> balls) {
+    if (frame.empty()) return;
+
+    for (const auto& ball : balls) {
+        cv::circle(frame, ball.position, static_cast<int>(ball.radius), ball.color, -1);
+    }
+
+    // Optional: weitere Spielfiguren, Score, etc. zeichnen
+}
+
+// Liest eine Taste von der Tastatur aus (z.B. für Steuerung oder Beenden)
+int Gui::getKeybord() {
+    // Gibt den ASCII-Code der gedrückten Taste zurück, -1 falls keine Taste gedrückt
+    int key = cv::waitKey(10);
+    return key;
 }

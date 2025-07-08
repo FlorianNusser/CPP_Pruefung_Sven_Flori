@@ -10,7 +10,7 @@ static std::mt19937& getGenerator()
     return gen;
 }
 
-Shape::Shape() : m_color(Color::Red), m_yPosition(0)
+Shape::Shape() : m_color(Color::RED), m_yPosition(0)
 {
     std::uniform_int_distribution<int> sizeDist(10, 100);
     std::uniform_int_distribution<int> velocityDist(1, 10);

@@ -2,12 +2,12 @@
 #define COLOR_HPP
 
 enum class Color{
-    White,
-    Black,
-    Red,
-    Green,
-    Blue,
-    Purple
+    WHITE,
+    BLACK,
+    RED,
+    GREEN,
+    BLUE,
+    PURPLE
 };
 
 #endif

@@ -16,10 +16,11 @@ int main()
     player.printProperties();
 
     Gamemode gamemode = menu.selectGamemode();
+    std::string cascadeFilePath = "haarcascade_frontalface_default.xml";
+    Game game(cascadeFilePath, gamemode.getPlaymode());
 
-
-
-    menu.startGame();
+    game.startGame();
+    game.run();
 
 
     return 0;
