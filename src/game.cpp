@@ -1,19 +1,23 @@
-
 #include "game.hpp"
+#include "gui.hpp"
+#include "gamemode.hpp"
+#include "dodgeTheBalls.hpp"
+
 #include <iostream>
 #include <chrono> // for time control
 
 
-Game::Game(const std::string& cascadePath) : m_dodgeTheBalls(640, 480) 
+Game::Game(const std::string& cascadePath, Playmode playmode) : m_playmode(playmode), m_dodgeTheBalls(640, 480), m_gui(*this, cascadePath, playmode)
 {
-    if (!faceCascade.load(cascadePath)) 
+    if (!faceCascade.load(cascadePath))
     {
         std::cerr << "Error loading cascade file!" << std::endl;
     }
 }
 
-Game::~Game() {
-    if (cap.isOpened()) 
+Game::~Game()
+{
+    if (cap.isOpened())
     {
         cap.release();
     }
@@ -22,7 +26,7 @@ Game::~Game() {
 
 bool Game::initialize() {
     cap.open(0);
-    if (!cap.isOpened()) 
+    if (!cap.isOpened())
     {
         std::cerr << "Error: Could not open camera." << std::endl;
         return false;
@@ -43,58 +47,71 @@ bool Game::initialize() {
     return true;
 }
 
-void Game::run() 
+void Game::run()
 {
-    if (!initialize()) return;
-
+    if (!initialize()) {
+        std::cerr << "Initialization failed." << std::endl;
+        return;
+    }
     cv::Mat frame;
     int spawnCounter = 0;
-    const int SPAWN_INTERVAL = 30; // 1 ball all 30 frames
+    const int SPAWN_INTERVAL = 30; // 1 ball every 30 frames
     bool gameOver = false;
 
-    while (!gameOver) 
+    while (!gameOver)
     {
+        //0. Frame holen
         cap >> frame;
-        if (frame.empty()) break;
-
+        if (frame.empty())
+        {
+            std::cerr << "Frame is empty! Camera not delivering images." << std::endl;
+            break;
+        }
         cv::flip(frame, frame, 1);
 
-        // face detection
-        std::vector<cv::Rect> faces;
-        faceCascade.detectMultiScale(frame, faces, 1.1, 3, 0, cv::Size(60, 60));
 
-        // ball-logic
-        if (spawnCounter % SPAWN_INTERVAL == 0) 
-        {
+
+        // 1. Frame und Gesichter aktualisieren & anzeigen
+        std::vector<cv::Rect> faces = m_gui.updateFrame(frame);
+
+        // 2. Ball-Logik
+        if (spawnCounter % SPAWN_INTERVAL == 0) {
             m_dodgeTheBalls.spawnBall();
         }
         spawnCounter++;
-
         m_dodgeTheBalls.updateBalls();
-        m_dodgeTheBalls.drawBalls(frame);
         m_dodgeTheBalls.removeOffscreenBalls();
 
-        // Collision check for all faces
-        for (const auto& face : faces) 
-        {
-            if (m_dodgeTheBalls.checkCollision(face)) 
-            {
-                gameOver = true;
-                cv::putText(frame, "GAME OVER!", cv::Point(100, 200),
-                          cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar(0, 0, 255), 3);
-                cv::imshow(windowName, frame);
-                cv::waitKey(2000);
-                break;
-            }
-        }
-
-        for (const auto& face : faces) 
-        {
-            cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
-        }
+        // 3. Bälle zeichnen (auf das aktuelle Frame)
+        m_gui.drawBalls(frame, m_dodgeTheBalls.getBalls());
 
         cv::imshow(windowName, frame);
-        if (cv::waitKey(10) == 27) break; // ESC
+
+        // 4. Tastaturabfrage
+        int key = m_gui.getKeybord();
+        if (key == 27) { // ESC
+            break;
+        }
+
+        //5. Kollisionserkennung (optional: Gesichter aus updateFrame an Game übergeben)
+        //Beispiel: Du müsstest die erkannten Gesichter aus updateFrame() an Game übergeben oder dort speichern.
+        //Hier als Platzhalter:
+        for (const auto& face : faces) {
+            if (m_dodgeTheBalls.checkCollision(face)) {
+                gameOver = true;
+                // Optional: Game-Over-Anzeige in der GUI
+            }
+        }
+        
     }
+}
+
+
+void Game::startGame()
+{
+    std::cout << "Press Enter to start the game..." << std::endl;
+    std::cin.ignore(); // Überspringt das vorherige Eingabezeichen
+    std::cin.get(); // Warten auf Enter-Taste
+    std::cout << "\n";
 }
 

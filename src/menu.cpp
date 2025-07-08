@@ -1,5 +1,7 @@
 #include "menu.hpp"
 #include "game.hpp"
+#include "gui.hpp"
+#include "gamemode.hpp"
 
 
 Player Menu::namePlayer()
@@ -38,13 +40,3 @@ Gamemode Menu::selectGamemode()
 
     }
 
-void Menu::startGame()
-{
-    std::cout << "Press Enter to start the game..." << std::endl;
-    std::cin.ignore(); // Überspringt das vorherige Eingabezeichen
-    std::cin.get(); // Warten auf Enter-Taste
-    std::cout << "\n";
-    std::string cascadeFilePath = "haarcascade_frontalface_default.xml";
-    Game game(cascadeFilePath);
-    game.run();
-}

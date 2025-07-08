@@ -7,28 +7,41 @@ enum class Playmode
     DodgeTheBalls
 };
 
-
 class Gamemode
 {
 public:
-    Gamemode(Playmode& playmode);
+    Gamemode(Playmode &playmode);
 
     virtual ~Gamemode();
 
-    Playmode getGametype() const { return m_playmode; }
-    int getScore() const { return m_score; }
-    int getTime() const { return m_time; }
+    int getScore() const
+    {
+        return m_score;
+    }
+    int getTime() const 
+    { 
+        return m_time; 
+    }
+    Playmode getPlaymode() const { 
+        return m_playmode; 
+    }
 
-    void setScore(int score) { m_score = score; }
-    void setTime(int time) { m_time = time; }
+    void setScore(int score) 
+    { 
+        m_score = score; 
+    }
+    void setTime(int time) 
+    { 
+        m_time = time; 
+    }
+
 private:
     Playmode m_playmode;
     int m_score;
     int m_time;
-    //int m_lives;
-    //int m_level;
-    //int m_speed;
+    // int m_lives;
+    // int m_level;
+    // int m_speed;
 };
 
-
-#endif //GAMEMODE_HPP
+#endif // GAMEMODE_HPP

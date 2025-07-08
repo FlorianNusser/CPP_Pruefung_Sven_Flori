@@ -16,9 +16,12 @@ int main()
     player.printProperties();
 
     Gamemode gamemode = menu.selectGamemode();
+    std::string cascadeFilePath = "haarcascade_frontalface_default.xml";
+    Game game(cascadeFilePath, gamemode.getPlaymode());
 
-    menu.startGame();
-    //Gui gui(Color::Black, player.m_name, Playmode::DodgeTheBalls); // Standardwert für Playmode
+    game.startGame();
+    game.run();
+
 
     return 0;
 }

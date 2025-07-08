@@ -12,7 +12,7 @@ class Menu
 public:
     Player namePlayer();
     Gamemode selectGamemode();
-    void startGame();
+    
 
 
 private:
