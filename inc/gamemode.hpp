@@ -14,26 +14,11 @@ public:
 
     virtual ~Gamemode();
 
-    int getScore() const
-    {
-        return m_score;
-    }
-    int getTime() const 
-    { 
-        return m_time; 
-    }
-    Playmode getPlaymode() const { 
-        return m_playmode; 
-    }
-
-    void setScore(int score) 
-    { 
-        m_score = score; 
-    }
-    void setTime(int time) 
-    { 
-        m_time = time; 
-    }
+    int getScore() const;
+    int getTime() const ;
+    Playmode getPlaymode() const;
+    void setScore(int score);
+    void setTime(int time);
 
 private:
     Playmode m_playmode;

@@ -17,26 +17,33 @@ Player Menu::namePlayer()
 Gamemode Menu::selectGamemode()
     {
         Playmode playmode;
-        std::cout << "1. Dodge the Balls" << std::endl;
-        std::cout << "2. Catch the Squares" << std::endl;
-        std::cout << "Enter Gamemode (1,2): ";
-
-        int choice;
-        std::cin >> choice;
+        int choice = 0;
+        bool validchoice = false;
+        // Validation of input
+        while(validchoice == false)
+        {
+            std::cout << "1. Dodge the Balls" << std::endl;
+            std::cout << "2. Catch the Squares" << std::endl;
+            std::cout << "Enter Gamemode (1,2): ";
+            std::cout << "Please select a valid option (1 or 2): ";
+            std::cin >> choice;
+        
         switch (choice)
         {
             case 1:
                 playmode = Playmode::DodgeTheBalls;
+                validchoice = true;
                 break;
             case 2:
                 playmode = Playmode::CatchTheSquares;
+                validchoice = true;
                 break;
             default:
-                std::cout << "Not an Option. Selected 'Dodge the Balls' by default." << std::endl;
-                playmode = Playmode::DodgeTheBalls;
+                std::cout << "Invalid choice!\n" << "Please Select a valid option!" << std::endl;
                 break;
         }
+        
+        }
         return Gamemode(playmode);
-
     }
 
