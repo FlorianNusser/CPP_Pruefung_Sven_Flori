@@ -8,5 +8,14 @@ namespace Constants
     const std::string CASCADE_FILE_PATH = "haarcascade_frontalface_default.xml";
 }
 
+namespace BallConfig
+{
+    constexpr int MIN_RADIUS = 10;
+    constexpr int MAX_RADIUS = 20;
+    constexpr int MIN_VELOCITY = 5;
+    constexpr int MAX_VELOCITY = 10;
+    constexpr int X_SPAWN_BORDER = 20; //20, damit die Bälle nicht aus dem Bildschirm hinaus ragen
+    constexpr int INITIAL_Y_POSITION = 0.0f;
+}
 
 #endif //CONSTANTS_HPP

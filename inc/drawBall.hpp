@@ -8,7 +8,7 @@
 class DrawBall : public DrawShape
 {
 public:
-    DrawBall(const cv::Point2f& position, Color color, float velocityY);
+    DrawBall(const cv::Point2f& position, Color color, int velocityY);
 
     virtual ~DrawBall();
 

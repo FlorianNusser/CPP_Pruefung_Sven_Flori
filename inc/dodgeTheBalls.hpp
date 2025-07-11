@@ -16,12 +16,6 @@ public:
     DodgeTheBalls(int width, int height);
     virtual ~DodgeTheBalls();
 
-    // In DodgeTheBalls.hpp von Copilot
-    DodgeTheBalls(DodgeTheBalls&&) = default;
-    DodgeTheBalls& operator=(DodgeTheBalls&&) = default;
-    DodgeTheBalls(const DodgeTheBalls&) = delete;
-    DodgeTheBalls& operator=(const DodgeTheBalls&) = delete;
-
     void spawnBall();
     void updateBalls();
     //wird durch drawBall Klasse ersetzt
@@ -30,10 +24,10 @@ public:
     void removeOffscreenBalls();
 
     // Zugriff auf aktuelle Bälle (z.B. für Tests)
-    const std::vector<std::unique_ptr<Ball>>& getBalls() const;
+    const std::vector<std::shared_ptr<Ball>>& getBalls() const;
 
 private:
-    std::vector<std::unique_ptr<Ball>> m_balls;
+    std::vector<std::shared_ptr<Ball>> m_balls;
     int m_screenWidth;
     int m_screenHeight;
 };

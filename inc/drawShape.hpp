@@ -6,7 +6,7 @@
 class DrawShape : public Shape
 {
 public:
-    DrawShape(const cv::Point2f& position, Color color, float velocityY);
+    DrawShape(const cv::Point2f& position, Color color, int velocityY);
 
     virtual ~DrawShape();
 

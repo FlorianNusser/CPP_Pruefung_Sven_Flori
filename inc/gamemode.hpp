@@ -11,8 +11,9 @@ class Gamemode
 {
 public:
     Gamemode(Playmode &playmode);
-
     virtual ~Gamemode();
+
+    void calcScore();
 
     int getScore() const;
     int getTime() const ;

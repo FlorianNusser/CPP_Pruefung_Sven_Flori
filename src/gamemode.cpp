@@ -6,6 +6,14 @@ Gamemode::Gamemode(Playmode& playmode): m_playmode(playmode), m_score(0), m_time
 Gamemode::~Gamemode()
 {}
 
+
+void Gamemode::calcScore()
+{
+
+}
+
+
+
 int Gamemode::getScore() const
 {
     return m_score;

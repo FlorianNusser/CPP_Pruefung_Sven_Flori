@@ -1,6 +1,7 @@
 #include "dodgeTheBalls.hpp"
 #include "ball.hpp"
 #include "randomGenerator.hpp"
+#include "constants.hpp"
 #include <algorithm>
 
 DodgeTheBalls::DodgeTheBalls(int width, int height)
@@ -11,18 +12,17 @@ DodgeTheBalls::~DodgeTheBalls()
 {}
 
 void DodgeTheBalls::spawnBall() {
-    std::uniform_real_distribution<float> radiusDist(15.0f, 30.0f);
-    std::uniform_real_distribution<float> velocityDist(3.0f, 7.0f);
-    std::uniform_real_distribution<float> xDist(20.0f, m_screenWidth - 20.0f); //20, damit die Bälle nicht aus dem Bildschirm hinaus ragen
+    std::uniform_int_distribution<int> radiusDist(BallConfig::MIN_RADIUS,BallConfig::MAX_RADIUS);
+    std::uniform_int_distribution<int> velocityDist(BallConfig::MIN_VELOCITY, BallConfig::MAX_VELOCITY);
+    std::uniform_int_distribution<int> xSpawnDist(BallConfig::X_SPAWN_BORDER, m_screenWidth - BallConfig::X_SPAWN_BORDER);
 
     float velocityY = velocityDist(RandomGenerator::getGenerator());
     float radius = radiusDist(RandomGenerator::getGenerator());
-    const cv::Point2f position = cv::Point2f(xDist(RandomGenerator::getGenerator()), 0.0f);
+    const cv::Point2f position = cv::Point2f(xSpawnDist(RandomGenerator::getGenerator()), 0);
     Color color = Color::RED;
     cv::Scalar scalarColor = getScalarFromColor(color);
-    auto ball = std::make_unique<Ball>(position, velocityY, color, radius);
-
-    m_balls.push_back(std::move(ball));
+    auto ball = std::make_shared<Ball>(position, color,velocityY, radius);
+    m_balls.push_back(ball);
 }
 
 void DodgeTheBalls::updateBalls() {
@@ -70,12 +70,12 @@ bool DodgeTheBalls::checkCollision(const cv::Rect& playerRect) const {
 void DodgeTheBalls::removeOffscreenBalls() {
     m_balls.erase(
         std::remove_if(m_balls.begin(), m_balls.end(),
-            [this](const std::unique_ptr<Ball>& ball) {
+            [this](const std::shared_ptr<Ball>& ball) {
                 return ball->getPosition().y - ball->getRadius() > m_screenHeight;
             }),
         m_balls.end());
 }
 
-const std::vector<std::unique_ptr<Ball>>& DodgeTheBalls::getBalls() const {
+const std::vector<std::shared_ptr<Ball>>& DodgeTheBalls::getBalls() const {
     return m_balls;
 }

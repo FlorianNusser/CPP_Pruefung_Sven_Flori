@@ -1,7 +1,7 @@
 #include "shape.hpp"
 #include <iostream>
 #include "color.hpp"
-Shape::Shape(const cv::Point2f& position, Color color, float velocityY)
+Shape::Shape(const cv::Point2f& position, Color color, int velocityY)
     : m_position(position), m_color(color), m_velocityY(velocityY)
 {
 
@@ -17,7 +17,7 @@ Color Shape::getColor()
     return m_color;
 }
 
-float Shape::getVelocityY()
+int Shape::getVelocityY()
 {
     return m_velocityY;
 }

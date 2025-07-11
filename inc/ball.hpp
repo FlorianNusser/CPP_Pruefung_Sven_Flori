@@ -6,13 +6,13 @@
 class Ball : public Shape
 {
 public:
-    Ball(const cv::Point2f& position, float velocity, Color color, float radius);
+    Ball(const cv::Point2f& position, Color color, int velocity, int radius);
     virtual ~Ball();
 
-    float getRadius() const;
+    int getRadius() const;
 
 private:
-    float m_radius;
+    int m_radius;
 };
 
 #endif //BALL_HPP
