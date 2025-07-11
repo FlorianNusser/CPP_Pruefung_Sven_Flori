@@ -86,7 +86,8 @@ void Game::run()
             m_dodgeTheBalls.removeOffscreenBalls();
 
             // 3. Bälle zeichnen (auf das aktuelle Frame)
-            m_gui.drawBalls(frame, m_dodgeTheBalls.getBalls());
+            m_dodgeTheBalls.drawBalls(frame);
+
 
             //5. Kollisionserkennung (optional: Gesichter aus updateFrame an Game übergeben)
             //Beispiel: Du müsstest die erkannten Gesichter aus updateFrame() an Game übergeben oder dort speichern.

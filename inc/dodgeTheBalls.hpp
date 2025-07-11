@@ -4,32 +4,38 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include <memory>
+#include <ball.hpp>
+#include <drawBall.hpp>
 
-// Struktur für einen Ball
-struct Ball {
-    cv::Point2f position;
-    float radius;
-    cv::Scalar color;
-    float velocityY;
-};
+
 
 class DodgeTheBalls {
 public:
+
     DodgeTheBalls(int width, int height);
+    virtual ~DodgeTheBalls();
+
+    // In DodgeTheBalls.hpp von Copilot
+    DodgeTheBalls(DodgeTheBalls&&) = default;
+    DodgeTheBalls& operator=(DodgeTheBalls&&) = default;
+    DodgeTheBalls(const DodgeTheBalls&) = delete;
+    DodgeTheBalls& operator=(const DodgeTheBalls&) = delete;
 
     void spawnBall();
     void updateBalls();
+    //wird durch drawBall Klasse ersetzt
     void drawBalls(cv::Mat& frame) const;
     bool checkCollision(const cv::Rect& playerRect) const;
     void removeOffscreenBalls();
 
     // Zugriff auf aktuelle Bälle (z.B. für Tests)
-    const std::vector<Ball>& getBalls() const;
+    const std::vector<std::unique_ptr<Ball>>& getBalls() const;
 
 private:
-    int m_width;
-    int m_height;
-    std::vector<Ball> m_balls;
+    std::vector<std::unique_ptr<Ball>> m_balls;
+    int m_screenWidth;
+    int m_screenHeight;
 };
 
 

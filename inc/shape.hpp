@@ -8,15 +8,26 @@
 class Shape
 {
 public:
-    Shape(const cv::Point2f& position, Color color);
+    Shape(const cv::Point2f& position, Color color, float velocityY);
     virtual ~Shape();
 
-    virtual void drawShape() = 0;
+    //Getter zu Shape
+    Color getColor();
+    cv::Point2f getPosition();
+    float getVelocityY();
+
+
+    //Setter zu Shape
+    void setPosition(const cv::Point2f& pos);
+
+
+
+
 
 protected:
     Color m_color;
     cv::Point2f m_position;
-    float m_velocityY;
+    float m_velocityY = 0.0f;
 };
 
 #endif

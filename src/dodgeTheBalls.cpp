@@ -1,35 +1,42 @@
 #include "dodgeTheBalls.hpp"
-#include <random>
+#include "ball.hpp"
+#include "randomGenerator.hpp"
 #include <algorithm>
 
 DodgeTheBalls::DodgeTheBalls(int width, int height)
-    : m_width(width), m_height(height) {}
+    : m_screenWidth(width), m_screenHeight(height)
+{}
+
+DodgeTheBalls::~DodgeTheBalls()
+{}
 
 void DodgeTheBalls::spawnBall() {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> xDist(20.0f, m_width - 20.0f);
-    std::uniform_real_distribution<float> rDist(15.0f, 30.0f);
-    std::uniform_real_distribution<float> vDist(3.0f, 7.0f);
+    std::uniform_real_distribution<float> radiusDist(15.0f, 30.0f);
+    std::uniform_real_distribution<float> velocityDist(3.0f, 7.0f);
+    std::uniform_real_distribution<float> xDist(20.0f, m_screenWidth - 20.0f); //20, damit die Bälle nicht aus dem Bildschirm hinaus ragen
 
-    Ball ball;
-    ball.position = cv::Point2f(xDist(gen), 0.0f);
-    ball.radius = rDist(gen);
-    ball.color = cv::Scalar(0, 0, 255); // Rot
-    ball.velocityY = vDist(gen);
+    float velocityY = velocityDist(RandomGenerator::getGenerator());
+    float radius = radiusDist(RandomGenerator::getGenerator());
+    const cv::Point2f position = cv::Point2f(xDist(RandomGenerator::getGenerator()), 0.0f);
+    Color color = Color::RED;
+    cv::Scalar scalarColor = getScalarFromColor(color);
+    auto ball = std::make_unique<Ball>(position, velocityY, color, radius);
 
-    m_balls.push_back(ball);
+    m_balls.push_back(std::move(ball));
 }
 
 void DodgeTheBalls::updateBalls() {
     for (auto& ball : m_balls) {
-        ball.position.y += ball.velocityY;
+        cv::Point2f pos = ball->getPosition();
+        pos.y += ball->getVelocityY();
+        ball->setPosition(pos);
     }
 }
 
+//bald in drawballs //warum den Radius nicht gleich auf Int setzen?
 void DodgeTheBalls::drawBalls(cv::Mat& frame) const {
     for (const auto& ball : m_balls) {
-        cv::circle(frame, ball.position, static_cast<int>(ball.radius), ball.color, -1);
+        cv::circle(frame, ball->getPosition(), static_cast<int>(ball->getRadius()), getScalarFromColor(ball->getColor()),-1);
     }
 }
 
@@ -37,20 +44,23 @@ void DodgeTheBalls::drawBalls(cv::Mat& frame) const {
 
 bool DodgeTheBalls::checkCollision(const cv::Rect& playerRect) const {
     for (const auto& ball : m_balls) {
-        // Konvertiere alle Werte zu float für Konsistenz
+        // Rectangle-Werte als float
         float rectX = static_cast<float>(playerRect.x);
         float rectY = static_cast<float>(playerRect.y);
         float rectWidth = static_cast<float>(playerRect.width);
         float rectHeight = static_cast<float>(playerRect.height);
 
-        float closestX = std::max(rectX, std::min(ball.position.x, rectX + rectWidth));
-        float closestY = std::max(rectY, std::min(ball.position.y, rectY + rectHeight));
+        cv::Point2f pos = ball->getPosition();
+        float radius = ball->getRadius();
 
-        float distanceX = ball.position.x - closestX;
-        float distanceY = ball.position.y - closestY;
+        float closestX = std::max(rectX, std::min(pos.x, rectX + rectWidth));
+        float closestY = std::max(rectY, std::min(pos.y, rectY + rectHeight));
+
+        float distanceX = pos.x - closestX;
+        float distanceY = pos.y - closestY;
         float distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
 
-        if (distanceSquared < (ball.radius * ball.radius)) {
+        if (distanceSquared < (radius * radius)) {
             return true;
         }
     }
@@ -60,10 +70,12 @@ bool DodgeTheBalls::checkCollision(const cv::Rect& playerRect) const {
 void DodgeTheBalls::removeOffscreenBalls() {
     m_balls.erase(
         std::remove_if(m_balls.begin(), m_balls.end(),
-            [this](const Ball& ball) { return ball.position.y - ball.radius > m_height; }),
+            [this](const std::unique_ptr<Ball>& ball) {
+                return ball->getPosition().y - ball->getRadius() > m_screenHeight;
+            }),
         m_balls.end());
 }
 
-const std::vector<Ball>& DodgeTheBalls::getBalls() const {
+const std::vector<std::unique_ptr<Ball>>& DodgeTheBalls::getBalls() const {
     return m_balls;
 }

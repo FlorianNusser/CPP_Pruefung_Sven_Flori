@@ -21,7 +21,7 @@ public:
     void display();
     //Lucas Vorschläge //noch implementieren
     std::vector<cv::Rect> updateFrame(cv::Mat& frame);
-    void drawBalls(cv::Mat& frame, std::vector<Ball> balls);
+    //void drawBalls(cv::Mat& frame, const std::vector<std::unique_ptr<Ball>>& balls);
     int getKeybord();
 
 

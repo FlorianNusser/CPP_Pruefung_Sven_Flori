@@ -6,10 +6,10 @@
 class Ball : public Shape
 {
 public:
-    Ball(const cv::Point2f& position, float radius, Color color);
+    Ball(const cv::Point2f& position, float velocity, Color color, float radius);
     virtual ~Ball();
 
-    void drawShape() override;
+    float getRadius() const;
 
 private:
     float m_radius;
