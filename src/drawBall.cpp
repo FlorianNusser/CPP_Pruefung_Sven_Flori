@@ -1,7 +1,7 @@
 #include "drawBall.hpp"
 #include "dodgeTheBalls.hpp"
 
-DrawBall::DrawBall(const cv::Point2f& position, Color color, float velocityY)
+DrawBall::DrawBall(const cv::Point2f& position, Color color, int velocityY)
 : DrawShape(position, color, velocityY)
 {
 
