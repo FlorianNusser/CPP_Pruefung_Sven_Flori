@@ -3,9 +3,19 @@
 
 #include "shape.hpp"
 
-class DrawShape
+class DrawShape : public Shape
 {
+public:
+    DrawShape(const cv::Point2f& position, Color color, float velocityY);
 
+    virtual ~DrawShape();
+
+    virtual void drawShape(cv::Mat& frame) const = 0;
+
+    //Setter
+    void setSpeed();
+
+private:
 };
 
 #endif //DRAW_SHAPE_HPP

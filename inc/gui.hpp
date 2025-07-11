@@ -18,11 +18,10 @@ public:
 
 
     bool initialize();
-    //void renderFrame(cv::Mat& frame, const DodgeTheBalls& model, const cv::Rect& playerRect);
     void display();
     //Lucas Vorschläge //noch implementieren
     std::vector<cv::Rect> updateFrame(cv::Mat& frame);
-    void drawBalls(cv::Mat& frame, std::vector<Ball> balls);
+    //void drawBalls(cv::Mat& frame, const std::vector<std::unique_ptr<Ball>>& balls);
     int getKeybord();
 
 
@@ -31,14 +30,12 @@ public:
 
 
 private:
-    //cv::VideoCapture cap;
     cv::CascadeClassifier faceCascade;
     const std::string m_windowName = "Face Detection";
     int m_frameWidth;
     int m_frameHeight;
     int m_score;
     Color m_textcolor;
-    //Playername wird von Klasse Player geliefert
     //const std::string m_playername;
     Playmode m_playmode;
     Game &m_game;

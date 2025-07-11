@@ -34,11 +34,11 @@ bool Game::initialize() {
 
     frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
     frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-    
+
     // make sure, that DodgeTheBalls has the right size
     m_dodgeTheBalls = DodgeTheBalls(frameWidth, frameHeight);
 
-    if (faceCascade.empty()) 
+    if (faceCascade.empty())
     {
         std::cerr << "Error: Could not load Haar cascade file." << std::endl;
         return false;
@@ -74,35 +74,47 @@ void Game::run()
         // 1. Frame und Gesichter aktualisieren & anzeigen
         std::vector<cv::Rect> faces = m_gui.updateFrame(frame);
 
-        // 2. Ball-Logik
-        if (spawnCounter % SPAWN_INTERVAL == 0) {
-            m_dodgeTheBalls.spawnBall();
-        }
-        spawnCounter++;
-        m_dodgeTheBalls.updateBalls();
-        m_dodgeTheBalls.removeOffscreenBalls();
+        // 2.1 DodgeTheBalls Logik
+        if(m_playmode == Playmode::DodgeTheBalls)
+        {
+            if (spawnCounter % SPAWN_INTERVAL == 0)
+            {
+                m_dodgeTheBalls.spawnBall();
+            }
+            spawnCounter++;
+            m_dodgeTheBalls.updateBalls();
+            m_dodgeTheBalls.removeOffscreenBalls();
 
-        // 3. Bälle zeichnen (auf das aktuelle Frame)
-        m_gui.drawBalls(frame, m_dodgeTheBalls.getBalls());
+            // 3. Bälle zeichnen (auf das aktuelle Frame)
+            m_dodgeTheBalls.drawBalls(frame);
+
+
+            //5. Kollisionserkennung (optional: Gesichter aus updateFrame an Game übergeben)
+            //Beispiel: Du müsstest die erkannten Gesichter aus updateFrame() an Game übergeben oder dort speichern.
+            //Hier als Platzhalter:
+            for (const auto& face : faces)
+            {
+                if (m_dodgeTheBalls.checkCollision(face))
+                {
+                    gameOver = true;
+                    // Optional: Game-Over-Anzeige in der GUI
+                }
+            }
+
+        }
+        else if(m_playmode == Playmode::CatchTheSquares)
+        {
+
+        }
 
         cv::imshow(windowName, frame);
 
         // 4. Tastaturabfrage
         int key = m_gui.getKeybord();
-        if (key == 27) { // ESC
+        if (key == 27) //ESC
+        {
             break;
         }
-
-        //5. Kollisionserkennung (optional: Gesichter aus updateFrame an Game übergeben)
-        //Beispiel: Du müsstest die erkannten Gesichter aus updateFrame() an Game übergeben oder dort speichern.
-        //Hier als Platzhalter:
-        for (const auto& face : faces) {
-            if (m_dodgeTheBalls.checkCollision(face)) {
-                gameOver = true;
-                // Optional: Game-Over-Anzeige in der GUI
-            }
-        }
-        
     }
 }
 

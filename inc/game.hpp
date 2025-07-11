@@ -7,6 +7,8 @@
 
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <memory>
+#include <vector>
 
 //class Gui;
 
@@ -18,7 +20,7 @@ public:
     bool initialize();
     void startGame();
     void run();
-    
+
 private:
     cv::VideoCapture cap;
     cv::CascadeClassifier faceCascade;

@@ -1,17 +1,18 @@
 #ifndef BALL_HPP
 #define BALL_HPP
 
-#include <opencv2/opencv.hpp>
+#include "shape.hpp"
 
-struct Ball {
-  cv::Point2f pos;
-  cv::Point2f vel;
-  float radius;
+class Ball : public Shape
+{
+public:
+    Ball(const cv::Point2f& position, float velocity, Color color, float radius);
+    virtual ~Ball();
 
-  Ball(cv::Point2f p, cv::Point2f v, float r)
-    : pos(p), vel(v), radius(r) {}
-  void update(float dt) { pos += vel * dt; }
-  bool offScreen(int h) const { return pos.y - radius > h; }
+    float getRadius() const;
+
+private:
+    float m_radius;
 };
 
-#endif // BALL_HPP
+#endif //BALL_HPP

@@ -40,16 +40,13 @@ std::vector<cv::Rect> Gui::updateFrame(cv::Mat& frame) {
 }
 
 
-// Zeichnet alle Bälle auf das übergebene Frame
-void Gui::drawBalls(cv::Mat& frame, std::vector<Ball> balls) {
-    if (frame.empty()) return;
-
-    for (const auto& ball : balls) {
-        cv::circle(frame, ball.position, static_cast<int>(ball.radius), ball.color, -1);
-    }
-
-    // Optional: weitere Spielfiguren, Score, etc. zeichnen
-}
+// Zeichnet alle Bälle auf das übergebene Frame //Im moment in dodgeTheballs
+//void Gui::drawBalls(cv::Mat& frame, const std::vector<std::unique_ptr<Ball>>& balls) {
+//    if (frame.empty()) return;
+//    for (const auto& ball : balls) {
+//        cv::circle(frame, ball->getPosition(), static_cast<int>(ball->getRadius()), getScalarFromColor(ball->getColor()), -1);
+//    }
+//}
 
 // Liest eine Taste von der Tastatur aus (z.B. für Steuerung oder Beenden)
 int Gui::getKeybord() {

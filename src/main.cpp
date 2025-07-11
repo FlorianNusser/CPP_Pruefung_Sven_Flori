@@ -3,6 +3,7 @@
 #include "player.hpp"
 #include "menu.hpp"
 #include "gamemode.hpp"
+#include "constants.hpp"
 
 #include <iostream>
 #include <string>
@@ -16,7 +17,7 @@ int main()
     player.printProperties();
 
     Gamemode gamemode = menu.selectGamemode();
-    std::string cascadeFilePath = "haarcascade_frontalface_default.xml";
+    std::string cascadeFilePath = Constants::CASCADE_FILE_PATH;
     Game game(cascadeFilePath, gamemode.getPlaymode());
 
     game.startGame();
