@@ -2,12 +2,13 @@
 #include "gui.hpp"
 #include "gamemode.hpp"
 #include "dodgeTheBalls.hpp"
+#include "catchTheSquares.hpp"
 
 #include <iostream>
 #include <chrono> // for time control
 
 
-Game::Game(const std::string& cascadePath, Playmode playmode) : m_playmode(playmode), m_dodgeTheBalls(640, 480), m_gui(*this, cascadePath, playmode)
+Game::Game(const std::string& cascadePath, Playmode playmode) : m_playmode(playmode), m_dodgeTheBalls(640, 480),m_catchTheSquares(640, 480), m_gui(*this, cascadePath, playmode)
 {
     if (!faceCascade.load(cascadePath))
     {
@@ -37,6 +38,7 @@ bool Game::initialize() {
 
     // make sure, that DodgeTheBalls has the right size
     m_dodgeTheBalls = DodgeTheBalls(frameWidth, frameHeight);
+    m_catchTheSquares = CatchTheSquares(frameWidth, frameHeight);
 
     if (faceCascade.empty())
     {
@@ -54,8 +56,10 @@ void Game::run()
         return;
     }
     cv::Mat frame;
-    int spawnCounter = 0;
-    const int SPAWN_INTERVAL = 30; // 1 ball every 30 frames
+    int dodgeSpawnCounter = 0;
+    int catchSpawnCounter = 0;
+    const int DODGE_SPAWN_INTERVAL = 30; // 1 ball every 30 frames
+    const int CATCH_SPAWN_INTERVAL = 45;
     bool gameOver = false;
 
     while (!gameOver)
@@ -77,11 +81,11 @@ void Game::run()
         // 2.1 DodgeTheBalls Logik
         if(m_playmode == Playmode::DodgeTheBalls)
         {
-            if (spawnCounter % SPAWN_INTERVAL == 0)
+            if (dodgeSpawnCounter % DODGE_SPAWN_INTERVAL == 0)
             {
                 m_dodgeTheBalls.spawnBall();
             }
-            spawnCounter++;
+            dodgeSpawnCounter++;
             m_dodgeTheBalls.updateBalls();
             m_dodgeTheBalls.removeOffscreenBalls();
 
@@ -102,17 +106,33 @@ void Game::run()
             }
 
         }
-        else if(m_playmode == Playmode::CatchTheSquares)
+        else if (m_playmode == Playmode::CatchTheSquares) 
         {
-
+            if (catchSpawnCounter % CATCH_SPAWN_INTERVAL == 0)
+            {
+                m_catchTheSquares.spawnSquares();
+            }
+            catchSpawnCounter++;
+            
+            m_catchTheSquares.updateSquares();
+            m_catchTheSquares.drawSquares(frame);
+            
+            for (const auto& face : faces) 
+            {
+                if (m_catchTheSquares.checkCollision(face)) 
+                {
+                    m_score++;
+                    std::cout << "Score: " << m_score << std::endl;
+                }
+                m_catchTheSquares.removeCollidedSquares(face);
+            }
+            
+            m_catchTheSquares.removeOffscreenSquares();
         }
 
         cv::imshow(windowName, frame);
-
-        // 4. Tastaturabfrage
-        int key = m_gui.getKeybord();
-        if (key == 27) //ESC
-        {
+        
+        if (m_gui.getKeyboard() == 27) { // ESC
             break;
         }
     }

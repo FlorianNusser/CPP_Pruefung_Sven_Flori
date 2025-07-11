@@ -26,6 +26,8 @@ add_executable(FaceDetectionStarter
     src/gamemode.cpp
     src/color.cpp
     src/drawBall.cpp
+    src/catchTheSquares.cpp
+    src/square.cpp
 )
 target_link_libraries(FaceDetectionStarter ${OpenCV_LIBS})
 
