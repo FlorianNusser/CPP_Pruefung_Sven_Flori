@@ -2,9 +2,9 @@
 #define GAME_HPP
 
 #include "dodgeTheBalls.hpp"
+#include "catchTheSquares.hpp"
 #include "gamemode.hpp"
 #include "gui.hpp"
-
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <memory>
@@ -22,15 +22,16 @@ public:
     void run();
 
 private:
-    cv::VideoCapture cap;
+    Playmode m_playmode;
+    DodgeTheBalls m_dodgeTheBalls;
+    CatchTheSquares m_catchTheSquares;  // Sicherstellen, dass dies deklariert ist
+    Gui m_gui;
     cv::CascadeClassifier faceCascade;
-    const std::string windowName = "Face Detection";
+    cv::VideoCapture cap;
     int frameWidth;
     int frameHeight;
-    //neu
-    Playmode m_playmode;
-    Gui m_gui;
-    DodgeTheBalls m_dodgeTheBalls;
+    const std::string windowName = "Face Detection Game";
+    int m_score = 0;
 };
 
 #endif // GAME_HPP
