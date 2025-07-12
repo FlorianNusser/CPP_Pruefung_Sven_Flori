@@ -108,21 +108,39 @@ void Game::run()
         }
         else if (m_playmode == Playmode::CatchTheSquares) 
         {
+            int amountToWin = 0;
+            std::cout << "How many squares do you want to catch, meanwhile you dodge the balls?" << std::endl;
+            std::cout << "Enter your desired amount:" << std::endl;
+            std::cin >> amountToWin >> std::endl;
+            
             if (catchSpawnCounter % CATCH_SPAWN_INTERVAL == 0)
             {
                 m_catchTheSquares.spawnSquares();
             }
+            if (dodgeSpawnCounter % DODGE_SPAWN_INTERVAL == 0)
+            {
+                m_dodgeTheBalls.spawnBall();
+            }
             catchSpawnCounter++;
-            
             m_catchTheSquares.updateSquares();
             m_catchTheSquares.drawSquares(frame);
-            
-            for (const auto& face : faces) 
+
+            dodgeSpawnCounter++;
+            m_dodgeTheBalls.updateBalls();
+            m_dodgeTheBalls.removeOffscreenBalls();
+            m_dodgeTheBalls.drawBalls(frame);
+
+            for (const auto& face : faces)
             {
-                if (m_catchTheSquares.checkCollision(face)) 
+                if (m_catchTheSquares.checkCollision(face))
                 {
                     m_score++;
                     std::cout << "Score: " << m_score << std::endl;
+                }
+                else if (m_dodgeTheBalls.checkCollision(face))
+                {
+                    gameOver = true;
+                    // Optional: Game-Over-Anzeige in der GUI
                 }
                 m_catchTheSquares.removeCollidedSquares(face);
             }
