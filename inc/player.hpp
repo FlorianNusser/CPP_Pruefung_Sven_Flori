@@ -7,7 +7,9 @@ class Player
 public:
     Player(std::string &name);
     virtual ~Player();
+
     int getId() const;
+    std::string getPlayername();
 
     void printProperties();
 protected:

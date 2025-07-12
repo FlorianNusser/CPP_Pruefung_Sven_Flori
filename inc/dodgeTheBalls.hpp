@@ -22,6 +22,7 @@ public:
     void drawBalls(cv::Mat& frame) const;
     bool checkCollision(const cv::Rect& playerRect) const;
     void removeOffscreenBalls();
+    void calcScore(int &score);
 
     // Zugriff auf aktuelle Bälle (z.B. für Tests)
     const std::vector<std::shared_ptr<Ball>>& getBalls() const;

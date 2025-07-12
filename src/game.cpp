@@ -8,7 +8,7 @@
 #include <chrono> // for time control
 
 
-Game::Game(const std::string& cascadePath, Playmode playmode) : m_playmode(playmode), m_dodgeTheBalls(640, 480),m_catchTheSquares(640, 480), m_gui(*this, cascadePath, playmode)
+Game::Game(const std::string& cascadePath, Playmode playmode, Player player) : m_playmode(playmode), m_dodgeTheBalls(640, 480),m_catchTheSquares(640, 480), m_gui(*this, cascadePath, playmode), m_player(player)
 {
     if (!faceCascade.load(cascadePath))
     {
@@ -87,6 +87,7 @@ void Game::run()
             }
             dodgeSpawnCounter++;
             m_dodgeTheBalls.updateBalls();
+            m_dodgeTheBalls.calcScore(m_score);
             m_dodgeTheBalls.removeOffscreenBalls();
 
             // 3. Bälle zeichnen (auf das aktuelle Frame)
@@ -129,6 +130,7 @@ void Game::run()
             
             m_catchTheSquares.removeOffscreenSquares();
         }
+        m_gui.showScore(frame, m_score);
 
         cv::imshow(windowName, frame);
         
@@ -136,7 +138,27 @@ void Game::run()
             break;
         }
     }
+
+    // --- Game-Over-Bildschirm ---
+    // Hier erzeugen wir einen frischen Frame (schwarz), zeigen ihn an und
+    // warten in einer Schleife auf ESC.
+    cv::Mat gameOverFrame(frame.size(), frame.type());
+    while (true)
+    {
+        // Frame schwarz füllen und GameOver-UI rendern
+        gameOverFrame.setTo(cv::Scalar::all(0));
+        m_gui.showGameOver(gameOverFrame, m_score, m_player);
+
+        // auf Bildschirm bringen
+        cv::imshow(windowName, gameOverFrame);
+
+        // Taste abfragen
+        int key = m_gui.getKeyboard(); 
+        if (key == 27)  // ESC
+            break;
+    }
 }
+
 
 
 void Game::startGame()
