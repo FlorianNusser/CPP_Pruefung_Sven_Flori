@@ -24,6 +24,8 @@ public:
     //void drawBalls(cv::Mat& frame, const std::vector<std::unique_ptr<Ball>>& balls);
     int getKeyboard();
 
+    void showScore(cv::Mat& frame, int score);
+
 private:
     cv::CascadeClassifier faceCascade;
     const std::string m_windowName = "Face Detection";

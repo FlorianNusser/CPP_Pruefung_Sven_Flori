@@ -1,4 +1,5 @@
 #include "gui.hpp"
+#include "constants.hpp"
 #include <vector>
 
 Gui::Gui(Game& game, const std::string& cascadeFilePath, Playmode playmode)
@@ -30,11 +31,8 @@ std::vector<cv::Rect> Gui::updateFrame(cv::Mat& frame) {
 
     // Zeichne erkannte Gesichter
     for (const auto& face : faces) {
-        cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
+        cv::rectangle(frame, face, getScalarFromColor(Color::GREEN), 2);
     }
-
-    // Hier könntest du weitere Spiellogik aufrufen, z.B. game.update(faces);
-
 
     return faces;
 }
@@ -53,4 +51,16 @@ int Gui::getKeyboard() {
     // Gibt den ASCII-Code der gedrückten Taste zurück, -1 falls keine Taste gedrückt
     int key = cv::waitKey(10);
     return key;
+}
+
+void Gui::showScore(cv::Mat &frame, int score)
+{
+    std::string scoreText = "Score: " + std::to_string(score);
+    cv::putText(frame,
+            scoreText,
+            cv::Point(Constants::SCORE_X_COORDINATE, Constants::SCORE_Y_COORDINATE),
+            cv::FONT_HERSHEY_DUPLEX,
+            1.0,
+            getScalarFromColor(Color::WHITE),
+            2);
 }

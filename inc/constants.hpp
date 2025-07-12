@@ -6,6 +6,8 @@
 namespace Constants
 {
     const std::string CASCADE_FILE_PATH = "haarcascade_frontalface_default.xml";
+    const int SCORE_X_COORDINATE = 10;
+    const int SCORE_Y_COORDINATE = 25;
 }
 
 namespace BallConfig

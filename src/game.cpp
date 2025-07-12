@@ -87,6 +87,7 @@ void Game::run()
             }
             dodgeSpawnCounter++;
             m_dodgeTheBalls.updateBalls();
+            m_dodgeTheBalls.calcScore(m_score);
             m_dodgeTheBalls.removeOffscreenBalls();
 
             // 3. Bälle zeichnen (auf das aktuelle Frame)
@@ -129,6 +130,7 @@ void Game::run()
             
             m_catchTheSquares.removeOffscreenSquares();
         }
+        m_gui.showScore(frame, m_score);
 
         cv::imshow(windowName, frame);
         

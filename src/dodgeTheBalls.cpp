@@ -79,3 +79,15 @@ void DodgeTheBalls::removeOffscreenBalls() {
 const std::vector<std::shared_ptr<Ball>>& DodgeTheBalls::getBalls() const {
     return m_balls;
 }
+
+
+void DodgeTheBalls::calcScore(int& m_score)
+{
+    for (const auto& ball : m_balls)
+    {
+        if (ball->getPosition().y - ball->getRadius() > m_screenHeight)
+        {
+            ++m_score; // Erhöhe den Score
+        }
+    }
+}
