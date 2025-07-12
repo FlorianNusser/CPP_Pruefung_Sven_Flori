@@ -18,6 +18,11 @@ int Player::getId() const
     return m_id;
 }
 
+std::string Player::getPlayername()
+{
+    return m_name;
+}
+
 void Player::printProperties()
 {
 

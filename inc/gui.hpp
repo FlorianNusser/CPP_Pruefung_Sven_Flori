@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 //#include "game.hpp"
+#include "player.hpp"
 #include "gamemode.hpp"
 #include "color.hpp"
 #include "dodgeTheBalls.hpp"
@@ -25,13 +26,14 @@ public:
     int getKeyboard();
 
     void showScore(cv::Mat& frame, int score);
+    void showGameOver(cv::Mat &frame, int score, Player player);
 
 private:
     cv::CascadeClassifier faceCascade;
     const std::string m_windowName = "Face Detection";
     int m_frameWidth;
     int m_frameHeight;
-    int m_score;
+    //int m_score; //in Game.hpp
     Color m_textcolor;
     //const std::string m_playername;
     Playmode m_playmode;

@@ -5,6 +5,7 @@
 #include "catchTheSquares.hpp"
 #include "gamemode.hpp"
 #include "gui.hpp"
+#include "player.hpp"
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <memory>
@@ -15,7 +16,7 @@
 class Game
 {
 public:
-    Game(const std::string& cascadePath, Playmode playmode);
+    Game(const std::string& cascadePath, Playmode playmode, Player m_player);
     ~Game();
     bool initialize();
     void startGame();
@@ -26,6 +27,7 @@ private:
     DodgeTheBalls m_dodgeTheBalls;
     CatchTheSquares m_catchTheSquares;  // Sicherstellen, dass dies deklariert ist
     Gui m_gui;
+    Player m_player;
     cv::CascadeClassifier faceCascade;
     cv::VideoCapture cap;
     int frameWidth;
