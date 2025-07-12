@@ -30,12 +30,10 @@ public:
 
 private:
     cv::CascadeClassifier faceCascade;
-    const std::string m_windowName = "Face Detection";
     int m_frameWidth;
     int m_frameHeight;
-    //int m_score; //in Game.hpp
     Color m_textcolor;
-    //const std::string m_playername;
+    //brauchen wir das?
     Playmode m_playmode;
     Game &m_game;
 };

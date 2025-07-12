@@ -12,7 +12,6 @@ class Menu
 public:
     Player namePlayer();
     Gamemode selectGamemode();
-    
 
 
 private:

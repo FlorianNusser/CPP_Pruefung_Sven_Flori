@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <gameModeInterface.hpp>
 
 //class Gui;
 
@@ -23,6 +24,7 @@ public:
     void run();
 
 private:
+    std::unique_ptr<GameModeInterface> m_gameMode;
     Playmode m_playmode;
     DodgeTheBalls m_dodgeTheBalls;
     CatchTheSquares m_catchTheSquares;  // Sicherstellen, dass dies deklariert ist
@@ -32,7 +34,6 @@ private:
     cv::VideoCapture cap;
     int frameWidth;
     int frameHeight;
-    const std::string windowName = "Face Detection Game";
     int m_score = 0;
 };
 

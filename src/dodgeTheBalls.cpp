@@ -12,9 +12,9 @@ DodgeTheBalls::~DodgeTheBalls()
 {}
 
 void DodgeTheBalls::spawnBall() {
-    std::uniform_int_distribution<int> radiusDist(BallConfig::MIN_RADIUS,BallConfig::MAX_RADIUS);
-    std::uniform_int_distribution<int> velocityDist(BallConfig::MIN_VELOCITY, BallConfig::MAX_VELOCITY);
-    std::uniform_int_distribution<int> xSpawnDist(BallConfig::X_SPAWN_BORDER, m_screenWidth - BallConfig::X_SPAWN_BORDER);
+    std::uniform_int_distribution<int> radiusDist(DodgeTheBallsConfig::MIN_RADIUS,DodgeTheBallsConfig::MAX_RADIUS);
+    std::uniform_int_distribution<int> velocityDist(DodgeTheBallsConfig::MIN_VELOCITY, DodgeTheBallsConfig::MAX_VELOCITY);
+    std::uniform_int_distribution<int> xSpawnDist(DodgeTheBallsConfig::X_SPAWN_BORDER, m_screenWidth - DodgeTheBallsConfig::X_SPAWN_BORDER);
 
     float velocityY = velocityDist(RandomGenerator::getGenerator());
     float radius = radiusDist(RandomGenerator::getGenerator());

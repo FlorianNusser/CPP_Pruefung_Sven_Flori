@@ -13,12 +13,12 @@ CatchTheSquares::~CatchTheSquares()
 
 void CatchTheSquares::spawnSquares() {
     std::uniform_int_distribution<int> sizeDist(20, 40);  // Zufällige Größe der Quadrate
-    std::uniform_real_distribution<float> velocityDist(2.0f, 5.0f);  // Fallgeschwindigkeit
-    std::uniform_real_distribution<float> xDist(0.0f, m_screenWidth - 40.0f);  // Startposition X
+    std::uniform_int_distribution<int> velocityDist(2, 5);  // Fallgeschwindigkeit
+    std::uniform_int_distribution<int> xDist(0, m_screenWidth - 40);  // Startposition X
     
     int size = sizeDist(RandomGenerator::getGenerator());
-    float velocityY = velocityDist(RandomGenerator::getGenerator());
-    float x = xDist(RandomGenerator::getGenerator());
+    int velocityY = velocityDist(RandomGenerator::getGenerator());
+    int x = xDist(RandomGenerator::getGenerator());
     
     // Quadrat oben am Bildschirmrand spawnen
     cv::Point2f position(x, 0.0f);
