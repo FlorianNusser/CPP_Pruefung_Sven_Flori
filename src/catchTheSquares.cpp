@@ -1,6 +1,7 @@
 #include "catchTheSquares.hpp"
 #include "square.hpp"
 #include "randomGenerator.hpp"
+#include "constants.hpp"
 #include <algorithm>
 
 CatchTheSquares::CatchTheSquares(int width, int height): m_screenWidth(width), m_screenHeight(height)
@@ -12,19 +13,15 @@ CatchTheSquares::~CatchTheSquares()
 }
 
 void CatchTheSquares::spawnSquares() {
-    std::uniform_int_distribution<int> sizeDist(20, 40);  // Zufällige Größe der Quadrate
-    std::uniform_int_distribution<int> velocityDist(2, 5);  // Fallgeschwindigkeit
-    std::uniform_int_distribution<int> xDist(0, m_screenWidth - 40);  // Startposition X
-    
-    int size = sizeDist(RandomGenerator::getGenerator());
-    int velocityY = velocityDist(RandomGenerator::getGenerator());
-    int x = xDist(RandomGenerator::getGenerator());
-    
+    std::uniform_int_distribution<int> squareSizeDist(CatchTheSquaresConfig::MIN_SQUARE_SIZE, CatchTheSquaresConfig::MAX_SQUARE_SIZE);  // Zufällige Größe der Quadrate
+    std::uniform_int_distribution<int> velocityYDist(CatchTheSquaresConfig::MIN_SQUARE_VELOCITY, CatchTheSquaresConfig::MAX_SQUARE_VELOCITY);  // Fallgeschwindigkeit
+    std::uniform_int_distribution<int> xSpawnDist(CatchTheSquaresConfig::X_SPAWN_BORDER, m_screenWidth - CatchTheSquaresConfig::X_SPAWN_BORDER);  // Startposition X
+
+    int velocityY = velocityYDist(RandomGenerator::getGenerator());
+    int size = squareSizeDist(RandomGenerator::getGenerator());
     // Quadrat oben am Bildschirmrand spawnen
-    cv::Point2f position(x, 0.0f);
-    Color color = Color::GREEN;  // Quadrate in Grün
-    auto square = std::make_shared<Square>(position, color, velocityY, size);
-    
+    cv::Point2f position(xSpawnDist(RandomGenerator::getGenerator()), 0);
+    auto square = std::make_shared<Square>(position, CatchTheSquaresConfig::SQUARECOLOR, velocityY, size);
     m_squares.push_back(square);
 }
 
@@ -54,7 +51,7 @@ bool CatchTheSquares::checkCollision(const cv::Rect& playerRect) const {
 }
 
 
-void CatchTheSquares::removeOffscreenSquares() 
+void CatchTheSquares::removeOffscreenSquares()
 {
     m_squares.erase(
         std::remove_if(m_squares.begin(), m_squares.end(),
