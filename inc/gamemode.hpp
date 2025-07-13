@@ -25,9 +25,6 @@ private:
     Playmode m_playmode;
     int m_score;
     int m_time;
-    // int m_lives;
-    // int m_level;
-    // int m_speed;
 };
 
 #endif // GAMEMODE_HPP

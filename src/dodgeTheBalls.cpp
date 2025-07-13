@@ -12,16 +12,14 @@ DodgeTheBalls::~DodgeTheBalls()
 {}
 
 void DodgeTheBalls::spawnBall() {
-    std::uniform_int_distribution<int> radiusDist(BallConfig::MIN_RADIUS,BallConfig::MAX_RADIUS);
-    std::uniform_int_distribution<int> velocityDist(BallConfig::MIN_VELOCITY, BallConfig::MAX_VELOCITY);
-    std::uniform_int_distribution<int> xSpawnDist(BallConfig::X_SPAWN_BORDER, m_screenWidth - BallConfig::X_SPAWN_BORDER);
+    std::uniform_int_distribution<int> radiusDist(DodgeTheBallsConfig::MIN_RADIUS,DodgeTheBallsConfig::MAX_RADIUS);
+    std::uniform_int_distribution<int> velocityDist(DodgeTheBallsConfig::MIN_VELOCITY, DodgeTheBallsConfig::MAX_VELOCITY);
+    std::uniform_int_distribution<int> xSpawnDist(DodgeTheBallsConfig::X_SPAWN_BORDER, m_screenWidth - DodgeTheBallsConfig::X_SPAWN_BORDER);
 
-    float velocityY = velocityDist(RandomGenerator::getGenerator());
-    float radius = radiusDist(RandomGenerator::getGenerator());
+    int velocityY = velocityDist(RandomGenerator::getGenerator());
+    int radius = radiusDist(RandomGenerator::getGenerator());
     const cv::Point2f position = cv::Point2f(xSpawnDist(RandomGenerator::getGenerator()), 0);
-    Color color = Color::RED;
-    cv::Scalar scalarColor = getScalarFromColor(color);
-    auto ball = std::make_shared<Ball>(position, color,velocityY, radius);
+    auto ball = std::make_shared<Ball>(position, DodgeTheBallsConfig::BallColor, velocityY, radius);
     m_balls.push_back(ball);
 }
 

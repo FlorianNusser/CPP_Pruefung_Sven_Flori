@@ -10,7 +10,8 @@ enum class Color{
     RED,
     GREEN,
     BLUE,
-    PURPLE
+    PURPLE,
+    YELLOW
 };
 
 cv::Scalar getScalarFromColor(Color color);

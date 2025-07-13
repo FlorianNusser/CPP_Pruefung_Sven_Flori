@@ -27,7 +27,7 @@ public:
 protected:
     Color m_color;
     cv::Point2f m_position;
-    int m_velocityY = 0.0;
+    int m_velocityY = 0;
 };
 
 #endif
