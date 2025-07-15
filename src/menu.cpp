@@ -27,7 +27,7 @@ Gamemode Menu::selectGamemode()
             std::cout << "Enter Gamemode (1,2): ";
             std::cout << "Please select a valid option (1 or 2): ";
             std::cin >> choice;
-        
+
         switch (choice)
         {
             case 1:
@@ -36,13 +36,14 @@ Gamemode Menu::selectGamemode()
                 break;
             case 2:
                 playmode = Playmode::CatchTheSquares;
+
                 validchoice = true;
                 break;
             default:
                 std::cout << "Invalid choice!\n" << "Please Select a valid option!" << std::endl;
                 break;
         }
-        
+
         }
         return Gamemode(playmode);
     }
