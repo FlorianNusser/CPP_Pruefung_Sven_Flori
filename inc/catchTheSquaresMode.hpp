@@ -9,12 +9,18 @@ class CatchTheSquaresMode : public GameModeInterface {
 public:
     CatchTheSquaresMode();
     ~CatchTheSquaresMode() override = default;
-    
+
     void initialize(int screenWidth, int screenHeight) override;
     void spawnShape() override;
     void update(int& score) override;
     void handleCollisions(const std::vector<cv::Rect>& faces, int& score, bool& gameOver) override;
     void draw(cv::Mat& frame) override;
+
+    //Getter
+    int getSpawnedShapes() const override;
+    int getActiveShapes() const override;
+    bool isGameOver() override;
+
 
 private:
     CatchTheSquares m_catchLogic;
@@ -22,6 +28,8 @@ private:
 
     int m_catchSpawnCounter = 0;
     int m_dodgeSpawnCounter = 0;
+    int m_spawnedShapes = 0;
+    int m_shapeLimit = 0;
 };
 
 #endif //CATCH_THE_SQUARES_MODE_HPP

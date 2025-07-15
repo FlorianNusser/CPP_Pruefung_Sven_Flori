@@ -13,9 +13,15 @@ public:
     void handleCollisions(const std::vector<cv::Rect>& faces, int& score, bool& gameOver) override;
     void draw(cv::Mat& frame) override;
 
+
+    bool isGameOver() override;
+    int getSpawnedShapes() const override;
+    int getActiveShapes() const override;
+
 private:
     DodgeTheBalls m_logic;
     int m_spawnCounter = 0;
+    int m_spawnedShapes = 0;
 };
 
 

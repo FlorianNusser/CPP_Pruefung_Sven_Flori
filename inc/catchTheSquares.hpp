@@ -22,6 +22,9 @@ void removeOffscreenSquares();
 
 void removeCollidedSquares(const cv::Rect& playerRect);
 
+//Getter
+const std::vector<std::shared_ptr<Square>>& getSquares() const;
+
 private:
 std::vector<std::shared_ptr<Square>> m_squares;
 int m_screenWidth;

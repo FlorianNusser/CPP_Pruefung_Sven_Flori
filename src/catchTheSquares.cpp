@@ -70,3 +70,9 @@ void CatchTheSquares::removeCollidedSquares(const cv::Rect& playerRect) {
             }),
         m_squares.end());
 }
+
+
+const std::vector<std::shared_ptr<Square>>& CatchTheSquares::getSquares() const
+{
+    return m_squares;
+}

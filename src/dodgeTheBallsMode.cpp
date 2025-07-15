@@ -17,6 +17,7 @@ void DodgeTheBallsMode::spawnShape()
     if (m_spawnCounter++ % DodgeTheBallsConfig::SPAWN_INTERVAL == 0)
     {
         m_logic.spawnBall();
+        ++m_spawnedShapes;
     }
 }
 
@@ -43,3 +44,18 @@ void DodgeTheBallsMode::draw(cv::Mat& frame)
 {
     m_logic.drawBalls(frame);
 }
+
+//Falls man noch Counter in DodgeTheBalls will
+bool DodgeTheBallsMode::isGameOver() {
+    // Beispiel: Immer false, außer du willst auch für diesen Modus ein Limit
+    return false;
+}
+
+int DodgeTheBallsMode::getSpawnedShapes() const {
+    return m_spawnedShapes;
+}
+
+int DodgeTheBallsMode::getActiveShapes() const {
+    return m_logic.getBalls().size();
+}
+
