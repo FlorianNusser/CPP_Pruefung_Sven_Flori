@@ -12,7 +12,8 @@ CatchTheSquares::~CatchTheSquares()
 {
 }
 
-void CatchTheSquares::spawnSquares() {
+void CatchTheSquares::spawnSquares() 
+{
     std::uniform_int_distribution<int> squareSizeDist(CatchTheSquaresConfig::MIN_SQUARE_SIZE, CatchTheSquaresConfig::MAX_SQUARE_SIZE);  // Zufällige Größe der Quadrate
     std::uniform_int_distribution<int> velocityYDist(CatchTheSquaresConfig::MIN_SQUARE_VELOCITY, CatchTheSquaresConfig::MAX_SQUARE_VELOCITY);  // Fallgeschwindigkeit
     std::uniform_int_distribution<int> xSpawnDist(CatchTheSquaresConfig::X_SPAWN_BORDER, m_screenWidth - CatchTheSquaresConfig::X_SPAWN_BORDER);  // Startposition X
@@ -25,25 +26,32 @@ void CatchTheSquares::spawnSquares() {
     m_squares.push_back(square);
 }
 
-void CatchTheSquares::updateSquares() {
-    for (auto& square : m_squares) {
+void CatchTheSquares::updateSquares() 
+{
+    for (auto& square : m_squares) 
+    {
         cv::Point2f pos = square->getPosition();
         pos.y += square->getVelocityY();
         square->setPosition(pos);
     }
 }
 
-void CatchTheSquares::drawSquares(cv::Mat& frame) const {
-    for (const auto& square : m_squares) {
+void CatchTheSquares::drawSquares(cv::Mat& frame) const 
+{
+    for (const auto& square : m_squares) 
+    {
         cv::Rect rect = square->getRect();
         cv::rectangle(frame, rect, getScalarFromColor(square->getColor()), cv::FILLED);
     }
 }
 
-bool CatchTheSquares::checkCollision(const cv::Rect& playerRect) const {
-    for (const auto& square : m_squares) {
+bool CatchTheSquares::checkCollision(const cv::Rect& playerRect) const 
+{
+    for (const auto& square : m_squares) 
+    {
         cv::Rect squareRect = square->getRect();
-        if ((playerRect & squareRect).area() > 0) {
+        if ((playerRect & squareRect).area() > 0) 
+        {
             return true;
         }
     }
@@ -55,16 +63,19 @@ void CatchTheSquares::removeOffscreenSquares()
 {
     m_squares.erase(
         std::remove_if(m_squares.begin(), m_squares.end(),
-            [this](const std::shared_ptr<Square>& square) {
+            [this](const std::shared_ptr<Square>& square) 
+            {
                 return square->getPosition().y > m_screenHeight;
             }),
         m_squares.end());
 }
 
-void CatchTheSquares::removeCollidedSquares(const cv::Rect& playerRect) {
+void CatchTheSquares::removeCollidedSquares(const cv::Rect& playerRect) 
+{
     m_squares.erase(
         std::remove_if(m_squares.begin(), m_squares.end(),
-            [&playerRect](const std::shared_ptr<Square>& square) {
+            [&playerRect](const std::shared_ptr<Square>& square) 
+            {
                 cv::Rect squareRect = square->getRect();
                 return (playerRect & squareRect).area() > 0; // Kollisionsprüfung
             }),

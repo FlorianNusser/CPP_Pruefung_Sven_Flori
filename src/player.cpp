@@ -3,7 +3,7 @@
 
 int Player::idSetter = 0;
 
-Player::Player(std::string &name): m_name(name), m_id(idSetter)
+Player::Player(const std::string &name): m_name(name), m_id(idSetter)
 {
     idSetter++;
 }

@@ -10,9 +10,10 @@ public:
     virtual ~Ball();
 
     int getRadius() const;
-
+    cv::Rect getRect() const;
 private:
     int m_radius;
+    int m_sidelength;
 };
 
 #endif //BALL_HPP

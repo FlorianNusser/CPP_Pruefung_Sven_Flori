@@ -5,7 +5,7 @@
 class Player
 {
 public:
-    Player(std::string &name);
+    Player(const std::string &name);
     virtual ~Player();
 
     int getId() const;

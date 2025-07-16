@@ -89,6 +89,12 @@ void Game::run()
         m_gameMode->handleCollisions(faces, m_score, gameOver);
         m_gameMode->draw(frame);                          // Bälle zeichnen
 
+        // Check if game is over
+        if (m_gameMode->isGameOver()) 
+        {
+            gameOver = true;
+        }
+
         m_gui.showScore(frame, m_score);
 
         cv::imshow(Constants::WINDOW_NAME, frame);

@@ -36,7 +36,6 @@ Gamemode Menu::selectGamemode()
                 break;
             case 2:
                 playmode = Playmode::CatchTheSquares;
-
                 validchoice = true;
                 break;
             default:
