@@ -1,4 +1,8 @@
 #include "leaderboard.hpp"
+#include "leaderboard.hpp"
+#include "gameModeInterface.hpp"
+#include "player.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -22,8 +26,13 @@ void Leaderboard::load() {
     }
 }
 
-void Leaderboard::save() {
+void Leaderboard::save() 
+{
     std::ofstream file(m_filename, std::ios::trunc);
+    if (!file) {
+        std::cerr << "Konnte Leaderboard-Datei nicht öffnen: " << m_filename << std::endl;
+        return;
+    }
     for (const auto& entry : m_entries) {
         file << entry.playerId << ";" << entry.playerName << ";" << entry.score;
         if (entry.userLimit > 0)
@@ -73,4 +82,9 @@ std::vector<LeaderboardEntry> Leaderboard::getSortedEntriesCatchTheSquares() con
             return ratioA > ratioB;
         });
     return result;
+}
+
+void Leaderboard::addScoreFromGameMode(const GameModeInterface& mode, Player& player) {
+    LeaderboardEntry entry = mode.getLeaderboardEntry(player, mode.getScore());
+    addEntry(entry);
 }

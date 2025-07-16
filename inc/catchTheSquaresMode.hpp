@@ -16,6 +16,7 @@ public:
     void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) override;
     void draw(cv::Mat& frame) override;
     bool isGameOver() override;
+    LeaderboardEntry getLeaderboardEntry(Player& player, int score) const override;
 
     //Getter
     int getSpawnedShapes() const override;
