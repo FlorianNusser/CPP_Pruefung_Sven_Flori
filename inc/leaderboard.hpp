@@ -1,6 +1,10 @@
 #ifndef LEADERBOARD_HPP
 #define LEADERBOARD_HPP
 
+class GameModeInterface;
+class Player;
+
+
 #include <string>
 #include <vector>
 
@@ -18,6 +22,7 @@ public:
     void load();
     void save();
     void addEntry(const LeaderboardEntry& entry);
+    void addScoreFromGameMode(const GameModeInterface& mode, Player& player);
 
     std::vector<LeaderboardEntry> getSortedEntriesDodgeTheBalls() const;
     std::vector<LeaderboardEntry> getSortedEntriesCatchTheSquares() const;

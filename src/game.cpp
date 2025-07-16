@@ -100,6 +100,20 @@ void Game::run()
             break;
         }
     }
+    //Leaderboard Eintrag hinzufügen
+    std::string leaderboardFile;
+    if (m_playmode == Playmode::DodgeTheBalls)
+    {
+        leaderboardFile = "../leaderboardDodgeTheBalls.txt";
+    }
+    else
+    {
+        leaderboardFile = "../leaderboardCatchTheSquares.txt";
+    }
+
+    Leaderboard lb(leaderboardFile);
+    lb.load();
+    lb.addScoreFromGameMode(*m_gameMode, m_player);
 
     // --- Game-Over-Bildschirm ---
     cv::Mat gameOverFrame(frame.size(), frame.type());

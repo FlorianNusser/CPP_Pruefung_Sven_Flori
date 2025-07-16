@@ -41,6 +41,7 @@ add_executable(FaceDetectionStarter
     src/gameModeInterface.cpp
     src/dodgeTheBallsMode.cpp
     src/catchTheSquaresMode.cpp
+    src/leaderboard.cpp
 )
 target_link_libraries(FaceDetectionStarter ${OpenCV_LIBS})
 
@@ -66,6 +67,7 @@ if(BUILD_TESTS)
         src/gameModeInterface.cpp
         src/dodgeTheBallsMode.cpp
         src/catchTheSquaresMode.cpp
+        src/leaderboard.cpp
     )
     target_include_directories(GameTests PRIVATE ${CMAKE_SOURCE_DIR}/inc)
     target_link_libraries(GameTests

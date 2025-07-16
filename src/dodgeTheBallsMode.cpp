@@ -62,3 +62,12 @@ int DodgeTheBallsMode::getActiveShapes() const {
 int DodgeTheBallsMode::getScore() const {
     return m_score;
 }
+
+LeaderboardEntry DodgeTheBallsMode::getLeaderboardEntry(Player& player, int score) const {
+    LeaderboardEntry entry;
+    entry.playerId = player.getId();
+    entry.playerName = player.getPlayername();
+    entry.score = score;
+    entry.userLimit = 0;
+    return entry;
+}

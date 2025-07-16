@@ -12,6 +12,7 @@ public:
     void update() override;
     void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) override;
     void draw(cv::Mat& frame) override;
+    LeaderboardEntry getLeaderboardEntry(Player& player, int score) const override;
 
 
     bool isGameOver() override;

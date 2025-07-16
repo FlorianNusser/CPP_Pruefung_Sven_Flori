@@ -92,3 +92,12 @@ bool CatchTheSquaresMode::isGameOver()
 int CatchTheSquaresMode::getScore() const {
     return m_score;
 }
+
+LeaderboardEntry CatchTheSquaresMode::getLeaderboardEntry(Player& player, int score) const {
+    LeaderboardEntry entry;
+    entry.playerId = player.getId();
+    entry.playerName = player.getPlayername();
+    entry.score = score;
+    entry.userLimit = m_shapeLimit;
+    return entry;
+}
