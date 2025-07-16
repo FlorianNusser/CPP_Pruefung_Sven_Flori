@@ -68,7 +68,6 @@ void Game::run()
     }
     cv::Mat frame;
     bool gameOver = false;
-    m_score = 0;
 
     while (!gameOver)
     {
@@ -85,8 +84,8 @@ void Game::run()
         std::vector<cv::Rect> faces = m_gui.updateFrame(frame);
         // *** Neuer Polymorpher Modus-Aufruf ***
         m_gameMode->spawnShape();                         // Ball spawnen
-        m_gameMode->update(m_score);                      // Position updaten & Score
-        m_gameMode->handleCollisions(faces, m_score, gameOver);
+        m_gameMode->update();                      // Position updaten & Score
+        m_gameMode->handleCollisions(faces, gameOver);
         m_gameMode->draw(frame);                          // Bälle zeichnen
 
         // Check if game is over
@@ -94,8 +93,7 @@ void Game::run()
         {
             gameOver = true;
         }
-
-        m_gui.showScore(frame, m_score);
+        m_gui.showScore(frame, m_gameMode->getScore());
 
         cv::imshow(Constants::WINDOW_NAME, frame);
         if (m_gui.getKeyboard() == 27) { // ESC
@@ -109,7 +107,7 @@ void Game::run()
     {
         // Frame schwarz füllen und GameOver-UI rendern
         gameOverFrame.setTo(cv::Scalar::all(0));
-        m_gui.showGameOver(gameOverFrame, m_score, m_player);
+        m_gui.showGameOver(gameOverFrame, m_gameMode->getScore(), m_player);
 
         // auf Bildschirm bringen
         cv::imshow(Constants::WINDOW_NAME, gameOverFrame);

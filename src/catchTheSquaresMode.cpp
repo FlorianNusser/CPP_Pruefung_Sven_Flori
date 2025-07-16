@@ -12,7 +12,7 @@ CatchTheSquaresMode::CatchTheSquaresMode()
     std::cout << std::endl;
 }
 
-void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight) 
+void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
 {
     // Erzeuge beide Logik‐Instanzen mit realen Dimensionen
     m_catchLogic = CatchTheSquares(screenWidth, screenHeight);
@@ -36,7 +36,7 @@ void CatchTheSquaresMode::spawnShape() {
     }
 }
 
-void CatchTheSquaresMode::update(int& score) 
+void CatchTheSquaresMode::update()
 {
     // Positionen updaten
     m_catchLogic.updateSquares();
@@ -47,29 +47,29 @@ void CatchTheSquaresMode::update(int& score)
     m_dodgeLogic.removeOffscreenBalls();
 }
 
-void CatchTheSquaresMode::handleCollisions(const std::vector<cv::Rect>& faces, int& score, bool& gameOver)
+void CatchTheSquaresMode::handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver)
 {
-    for (auto const& face : faces) 
+    for (auto const& face : faces)
     {
         // Gefangene Quadrate erhöhen den Score
-        if (m_catchLogic.checkCollision(face)) 
+        if (m_catchLogic.checkCollision(face))
         {
-            ++score;
+            ++m_score;
             m_catchLogic.removeCollidedSquares(face);
         }
         // Ball‐Kollision beendet das Spiel
-        else if (m_dodgeLogic.checkCollision(face)) 
+        else if (m_dodgeLogic.checkCollision(face))
         {
             m_dodgeLogic.removeCollidedBalls(face);
-            if(score > 0)
+            if(m_score > 0)
             {
-                --score;
+                --m_score;
             }
         }
     }
 }
 
-void CatchTheSquaresMode::draw(cv::Mat& frame) 
+void CatchTheSquaresMode::draw(cv::Mat& frame)
 {
     m_catchLogic.drawSquares(frame);
     m_dodgeLogic.drawBalls(frame);
@@ -84,7 +84,11 @@ int CatchTheSquaresMode::getActiveShapes() const
     return m_catchLogic.getSquares().size() + m_dodgeLogic.getBalls().size();
 }
 
-bool CatchTheSquaresMode::isGameOver() 
+bool CatchTheSquaresMode::isGameOver()
 {
     return (m_spawnedShapes >= m_shapeLimit) && (getActiveShapes() == 0);
+}
+
+int CatchTheSquaresMode::getScore() const {
+    return m_score;
 }

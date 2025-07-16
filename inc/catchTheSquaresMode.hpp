@@ -12,14 +12,15 @@ public:
 
     void initialize(int screenWidth, int screenHeight) override;
     void spawnShape() override;
-    void update(int& score) override;
-    void handleCollisions(const std::vector<cv::Rect>& faces, int& score, bool& gameOver) override;
+    void update() override;
+    void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) override;
     void draw(cv::Mat& frame) override;
+    bool isGameOver() override;
 
     //Getter
     int getSpawnedShapes() const override;
     int getActiveShapes() const override;
-    bool isGameOver() override;
+    int getScore() const override;
 
 
 private:
