@@ -15,10 +15,15 @@ public:
     virtual void handleCollisions(const std::vector<cv::Rect>& faces, int& score, bool& gameOver) = 0;
     virtual void draw(cv::Mat& frame) = 0;
 
+
+
     //Object Counters
     virtual int getSpawnedShapes() const = 0;
     virtual int getActiveShapes() const = 0;
     virtual bool isGameOver() = 0;
+
+private:
+    int m_score;
 };
 
 
