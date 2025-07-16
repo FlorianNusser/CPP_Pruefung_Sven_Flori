@@ -64,6 +64,35 @@ bool DodgeTheBalls::checkCollision(const cv::Rect& playerRect) const {
     }
     return false;
 }
+void DodgeTheBalls::removeCollidedBalls(const cv::Rect& playerRect) 
+{
+    m_balls.erase(
+        std::remove_if(m_balls.begin(), m_balls.end(),
+            [&playerRect](const std::shared_ptr<Ball>& ball) 
+            {
+                // Rechteck-Kollisionslogik
+                cv::Point2f pos = ball->getPosition();
+                float radius = ball->getRadius();
+
+                float rectX = static_cast<float>(playerRect.x);
+                float rectY = static_cast<float>(playerRect.y);
+                float rectWidth = static_cast<float>(playerRect.width);
+                float rectHeight = static_cast<float>(playerRect.height);
+
+                // Finde den nächsten Punkt des Rechtecks zum Mittelpunkt des Balls
+                float closestX = std::max(rectX, std::min(pos.x, rectX + rectWidth));
+                float closestY = std::max(rectY, std::min(pos.y, rectY + rectHeight));
+
+                // Berechne die Distanz zwischen dem Ball-Mittelpunkt und dem nächsten Punkt
+                float distanceX = pos.x - closestX;
+                float distanceY = pos.y - closestY;
+                float distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+
+                // Entferne den Ball, wenn er mit dem Rechteck kollidiert
+                return distanceSquared < (radius * radius);
+            }),
+        m_balls.end());
+}
 
 void DodgeTheBalls::removeOffscreenBalls() {
     m_balls.erase(
@@ -74,7 +103,8 @@ void DodgeTheBalls::removeOffscreenBalls() {
         m_balls.end());
 }
 
-const std::vector<std::shared_ptr<Ball>>& DodgeTheBalls::getBalls() const {
+ const std::vector<std::shared_ptr<Ball>>& DodgeTheBalls::getBalls() const
+{
     return m_balls;
 }
 

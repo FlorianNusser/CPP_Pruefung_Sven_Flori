@@ -27,6 +27,8 @@ public:
     // Zugriff auf aktuelle Bälle (z.B. für Tests)
     const std::vector<std::shared_ptr<Ball>>& getBalls() const;
 
+    void removeCollidedBalls(const cv::Rect& playerRect);
+
 private:
     std::vector<std::shared_ptr<Ball>> m_balls;
     int m_screenWidth;
