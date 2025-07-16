@@ -34,11 +34,8 @@ add_executable(FaceDetectionStarter
     src/gui.cpp
     src/dodgeTheBalls.cpp
     src/ball.cpp
-    src/drawShape.cpp
     src/menu.cpp
-    src/gamemode.cpp
     src/color.cpp
-    src/drawBall.cpp
     src/catchTheSquares.cpp
     src/square.cpp
     src/gameModeInterface.cpp
@@ -63,15 +60,12 @@ if(BUILD_TESTS)
         src/dodgeTheBalls.cpp
         src/ball.cpp
         src/menu.cpp
-        src/gamemode.cpp
         src/color.cpp
         src/catchTheSquares.cpp
         src/square.cpp
         src/gameModeInterface.cpp
         src/dodgeTheBallsMode.cpp
         src/catchTheSquaresMode.cpp
-        src/drawShape.cpp
-        src/drawBall.cpp
     )
     target_include_directories(GameTests PRIVATE ${CMAKE_SOURCE_DIR}/inc)
     target_link_libraries(GameTests

@@ -16,9 +16,9 @@ int main()
 
     player.printProperties();
 
-    Gamemode gamemode = menu.selectGamemode();
+    Playmode gamemode = menu.selectGamemode();
     std::string cascadeFilePath = Constants::CASCADE_FILE_PATH;
-    Game game(cascadeFilePath, gamemode.getPlaymode(), player);
+    Game game(cascadeFilePath, gamemode, player);
 
     game.startGame();
     game.run();

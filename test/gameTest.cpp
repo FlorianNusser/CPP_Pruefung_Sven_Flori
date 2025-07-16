@@ -13,32 +13,6 @@
 #include "gui.hpp"
 #include "randomGenerator.hpp"
 
-TEST(GamemodeTest, ScoreAndTime) {
-    Playmode mode = Playmode::DodgeTheBalls;
-    Gamemode gamemode(mode);
-    
-    gamemode.setScore(150);
-    gamemode.setTime(45);
-    
-    EXPECT_EQ(gamemode.getScore(), 150);
-    EXPECT_EQ(gamemode.getTime(), 45);
-    EXPECT_EQ(gamemode.getPlaymode(), Playmode::DodgeTheBalls);
-}
-
-TEST(GamemodeTest, CalcScore) {
-    Playmode mode = Playmode::CatchTheSquares;
-    Gamemode gamemode(mode);
-    
-    gamemode.setScore(100);
-    gamemode.setTime(30);
-    gamemode.calcScore();
-    
-    // Annahme: calcScore implementiert eine bestimmte Logik
-    EXPECT_GT(gamemode.getScore(), 100);
-}
-
-
-
 TEST(RandomGeneratorTest, GeneratorInstance) {
     std::mt19937& gen1 = RandomGenerator::getGenerator();
     std::mt19937& gen2 = RandomGenerator::getGenerator();

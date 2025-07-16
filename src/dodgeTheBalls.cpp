@@ -31,7 +31,7 @@ void DodgeTheBalls::updateBalls() {
     }
 }
 
-//bald in drawballs //warum den Radius nicht gleich auf Int setzen?
+
 void DodgeTheBalls::drawBalls(cv::Mat& frame) const {
     for (const auto& ball : m_balls) {
         cv::circle(frame, ball->getPosition(), ball->getRadius(), getScalarFromColor(ball->getColor()),-1);

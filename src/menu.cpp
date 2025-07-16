@@ -14,7 +14,7 @@ Player Menu::namePlayer()
         return Player(name);
     }
 
-Gamemode Menu::selectGamemode()
+Playmode Menu::selectGamemode()
     {
         Playmode playmode;
         int choice = 0;
@@ -44,6 +44,6 @@ Gamemode Menu::selectGamemode()
         }
 
         }
-        return Gamemode(playmode);
+        return Playmode(playmode);
     }
 
