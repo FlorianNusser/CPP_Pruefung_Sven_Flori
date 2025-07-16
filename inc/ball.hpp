@@ -10,7 +10,6 @@ public:
     virtual ~Ball();
 
     int getRadius() const;
-    cv::Rect getRect() const;
 private:
     int m_radius;
 };

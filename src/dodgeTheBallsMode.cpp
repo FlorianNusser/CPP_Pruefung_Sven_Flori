@@ -21,14 +21,14 @@ void DodgeTheBallsMode::spawnShape()
     }
 }
 
-void DodgeTheBallsMode::update(int&score)
+void DodgeTheBallsMode::update()
 {
     m_logic.updateBalls();
-    m_logic.calcScore(score);
+    m_logic.calcScore(m_score);
     m_logic.removeOffscreenBalls();
 }
 
-void DodgeTheBallsMode::handleCollisions(const std::vector<cv::Rect>& faces, int& score, bool& gameOver)
+void DodgeTheBallsMode::handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver)
 {
     for(auto&rect : faces)
     {
@@ -59,3 +59,6 @@ int DodgeTheBallsMode::getActiveShapes() const {
     return m_logic.getBalls().size();
 }
 
+int DodgeTheBallsMode::getScore() const {
+    return m_score;
+}

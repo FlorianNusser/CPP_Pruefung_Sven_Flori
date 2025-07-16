@@ -12,11 +12,3 @@ int Ball::getRadius() const
 {
     return m_radius;
 }
-
-cv::Rect Ball::getRect() const
-{
-    // Convert float position to int for Rect
-    int x = static_cast<int>(m_position.x);
-    int y = static_cast<int>(m_position.y);
-    return cv::Rect(x, y, m_sidelength, m_sidelength);
-}
