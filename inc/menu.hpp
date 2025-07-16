@@ -11,7 +11,7 @@ class Menu
 {
 public:
     Player namePlayer();
-    Gamemode selectGamemode();
+    Playmode selectGamemode();
 
 
 private:

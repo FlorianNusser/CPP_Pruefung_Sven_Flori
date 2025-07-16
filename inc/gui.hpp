@@ -20,9 +20,9 @@ public:
 
     bool initialize();
     void display();
-    //Lucas Vorschläge //noch implementieren
+
     std::vector<cv::Rect> updateFrame(cv::Mat& frame);
-    //void drawBalls(cv::Mat& frame, const std::vector<std::unique_ptr<Ball>>& balls);
+
     int getKeyboard();
 
     void showScore(cv::Mat& frame, int score);

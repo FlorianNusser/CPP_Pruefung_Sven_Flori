@@ -39,5 +39,9 @@ bin/
 
 /opencv/
 
+# google test
+
+/googletest/
+
 # .vscode
 .vscode/

@@ -21,9 +21,6 @@ public:
     virtual int getSpawnedShapes() const = 0;
     virtual int getActiveShapes() const = 0;
     virtual bool isGameOver() = 0;
-
-private:
-    int m_score;
 };
 
 
