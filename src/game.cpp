@@ -129,7 +129,26 @@ void Game::run()
         // Taste abfragen
         int key = m_gui.getKeyboard(); 
         if (key == 27)  // ESC
+        {    
             break;
+        }
+        else if (key == 'l' || key == 'L')  // L für Leaderboard
+        {
+            // Leaderboard anzeigen
+            cv::Mat lbFrame(frame.size(), frame.type());
+            while (true)
+            {
+                lbFrame.setTo(cv::Scalar::all(0));
+                m_gui.showLeaderboard(lbFrame);
+                cv::imshow(Constants::WINDOW_NAME, lbFrame);
+            
+                int lbKey = m_gui.getKeyboard();
+                if (lbKey == 27)  // ESC zurück zum GameOver
+                {
+                    break;
+                }
+            }
+        }
     }
 }
 

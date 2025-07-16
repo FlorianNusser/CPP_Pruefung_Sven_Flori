@@ -1,9 +1,12 @@
 #include "gui.hpp"
 #include "constants.hpp"
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
 
 Gui::Gui(Game& game, const std::string& cascadeFilePath, Playmode playmode)
-    :m_game(game), m_textcolor(Color::WHITE), m_frameWidth(0), m_frameHeight(0)
+    :m_game(game), m_textcolor(Color::WHITE), m_frameWidth(0), m_frameHeight(0), m_playmode(playmode)
 {
     // Lädt "facaCascade" und überprüft, ob es erfolgreich war
     if (!faceCascade.load(cascadeFilePath))
@@ -114,3 +117,90 @@ void Gui::showGameOver(cv::Mat &frame, int score, Player player)
     // schwarzer Button-Text
     cv::putText(frame, escText, txtOrg, btnFace, btnScale, cv::Scalar(0,0,0), btnThick);
 }
+
+std::vector<std::vector<std::string>> Gui::parseLeaderboardFile(const std::string& filename, Playmode mode)
+{
+    std::vector<std::vector<std::string>> entries;
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Could not open leaderboard file: " << filename << "\n";
+        return entries;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
+        std::vector<std::string> tokens;
+        std::stringstream ss(line);
+        std::string tok;
+        // Spalte nach ';'
+        while (std::getline(ss, tok, ';')) {
+            tokens.push_back(tok);
+        }
+        // CatchTheSquares hat 4 Tokens, DodgeTheBalls 3
+        if ((mode == Playmode::CatchTheSquares && tokens.size() == 4) ||
+            (mode == Playmode::DodgeTheBalls    && tokens.size() == 3))
+        {
+            entries.push_back(tokens);
+        }
+    }
+    return entries;
+}
+
+void Gui::showLeaderboard(cv::Mat& frame)
+{
+    // 1) Datei auswählen
+    const std::string filename = (m_playmode == Playmode::CatchTheSquares)
+        ? "../leaderBoardCatchTheSquares.txt"
+        : "../leaderBoardDodgeTheBalls.txt";
+
+    // 2) Einträge einlesen
+    auto entries = parseLeaderboardFile(filename, m_playmode);
+
+    // 3) Optional: Sortieren nach Score (Token[2]) absteigend
+    std::sort(entries.begin(), entries.end(),
+        [](auto& a, auto& b) {
+            return std::stoi(a[2]) > std::stoi(b[2]);
+        });
+
+    // 4) Grafik: Überschrift
+    const int fontFace    = cv::FONT_HERSHEY_DUPLEX;
+    const double scale    = 1.2;
+    const int thickness   = 2;
+    const cv::Scalar color = getScalarFromColor(Color::WHITE);
+
+    std::string title = "Leaderboard";
+    cv::Size  sz    = cv::getTextSize(title, fontFace, scale, thickness, nullptr);
+    cv::Point org  = { (frame.cols - sz.width) / 2, 50 };
+    cv::putText(frame, title, org, fontFace, scale, color, thickness);
+
+    // 5) Tabellen-Kopf
+    int startY      = org.y + 40;
+    int lineHeight  = 30;
+    int colIdX      = 50;
+    int colNameX    = 120;
+    int colScoreX   = 350;
+    int colExtraX   = 480; // für gefallene Objekte
+
+    cv::putText(frame, "ID",    {colIdX,   startY},    fontFace, 1.0, color, 2);
+    cv::putText(frame, "Name",  {colNameX, startY},    fontFace, 1.0, color, 2);
+    cv::putText(frame, "Score", {colScoreX,startY},    fontFace, 1.0, color, 2);
+    if (m_playmode == Playmode::CatchTheSquares) {
+        cv::putText(frame, "Fallen", {colExtraX, startY}, fontFace, 1.0, color, 2);
+    }
+
+    // 6) Top 10 Zeilen
+    for (size_t i = 0; i < entries.size() && i < 10; ++i) {
+        int y = startY + lineHeight * (int(i) + 1);
+        auto& row = entries[i];
+
+        // row[0] = ID, row[1] = Name, row[2] = Score, row[3] optional Objects
+        cv::putText(frame, row[0], {colIdX,   y}, fontFace, 0.8, color, 2);
+        cv::putText(frame, row[1], {colNameX, y}, fontFace, 0.8, color, 2);
+        cv::putText(frame, row[2], {colScoreX,y}, fontFace, 0.8, color, 2);
+        if (m_playmode == Playmode::CatchTheSquares) {
+            cv::putText(frame, row[3], {colExtraX, y}, fontFace, 0.8, color, 2);
+        }
+    }
+}
+
