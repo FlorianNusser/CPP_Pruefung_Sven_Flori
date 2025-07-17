@@ -19,7 +19,7 @@ void DodgeTheBalls::spawnBall() {
     int velocityY = velocityDist(RandomGenerator::getGenerator());
     int radius = radiusDist(RandomGenerator::getGenerator());
     const cv::Point2f position = cv::Point2f(xSpawnDist(RandomGenerator::getGenerator()), 0);
-    auto ball = std::make_shared<Ball>(position, DodgeTheBallsConfig::BallColor, velocityY, radius);
+    auto ball = std::make_shared<Ball>(position, DodgeTheBallsConfig::BALL_COLOR, velocityY, radius);
     m_balls.push_back(ball);
 }
 
