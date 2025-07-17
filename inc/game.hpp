@@ -32,8 +32,8 @@ private:
     Player m_player;
     cv::CascadeClassifier faceCascade;
     cv::VideoCapture cap;
-    int frameWidth;
-    int frameHeight;
+    int m_frameWidth;
+    int m_frameHeight;
     int m_score = 0;
 };
 

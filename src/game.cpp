@@ -37,8 +37,8 @@ bool Game::initialize() {
         return false;
     }
 
-    frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
-    frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
+    m_frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
+    m_frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
     // hier den neuen Mode vorbereiten
     switch(m_playmode)
     {
@@ -49,14 +49,16 @@ bool Game::initialize() {
             m_gameMode = std::make_unique<CatchTheSquaresMode>();
             break;
     }
-    m_gameMode->initialize(frameWidth, frameHeight);
+    m_gameMode->initialize(m_frameWidth, m_frameHeight);
 
     if (faceCascade.empty())
     {
         std::cerr << "Error: Could not load Haar cascade file." << std::endl;
         return false;
     }
-    cv::namedWindow(Constants::WINDOW_NAME, cv::WINDOW_AUTOSIZE);
+    cv::namedWindow(Constants::WINDOW_NAME, cv::WINDOW_NORMAL);
+    cv::setWindowProperty(Constants::WINDOW_NAME, cv::WND_PROP_AUTOSIZE, 0);
+    cv::resizeWindow(Constants::WINDOW_NAME, m_frameWidth, m_frameHeight);
     return true;
 }
 
