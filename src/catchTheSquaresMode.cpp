@@ -7,9 +7,9 @@ CatchTheSquaresMode::CatchTheSquaresMode()
     m_catchSpawnCounter(0),
     m_dodgeSpawnCounter(0)
 {
-    std::cout << "How many Shapes do you want to be spawned: ";
-    std::cin >> m_shapeLimit;
-    std::cout << std::endl;
+    //std::cout << "How many Shapes do you want to be spawned: ";
+    //std::cin >> m_shapeLimit;
+    //std::cout << std::endl;
 }
 
 void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
@@ -17,6 +17,9 @@ void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
     // Erzeuge beide Logik‐Instanzen mit realen Dimensionen
     m_catchLogic = CatchTheSquares(screenWidth, screenHeight);
     m_dodgeLogic = DodgeTheBalls(screenWidth, screenHeight);
+    std::cout << "How many Shapes do you want to be spawned: ";
+    std::cin >> m_shapeLimit;
+    std::cout << std::endl;
 }
 
 void CatchTheSquaresMode::spawnShape() {

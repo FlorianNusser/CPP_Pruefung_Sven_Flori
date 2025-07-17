@@ -12,7 +12,7 @@
 #include <chrono> // for time control
 
 
-Game::Game(const std::string& cascadePath, Playmode playmode, Player player) : m_playmode(playmode), m_dodgeTheBalls(640, 480),m_catchTheSquares(640, 480), m_gui(*this, cascadePath, playmode), m_player(player)
+Game::Game(const std::string& cascadePath, Playmode playmode, Player player) : m_playmode(playmode), m_dodgeTheBalls(m_frameWidth, m_frameHeight),m_catchTheSquares(m_frameWidth, m_frameHeight), m_gui(*this, cascadePath, playmode), m_player(player)
 {
     if (!faceCascade.load(cascadePath))
     {
@@ -36,6 +36,8 @@ bool Game::initialize() {
         std::cerr << "Error: Could not open camera." << std::endl;
         return false;
     }
+    cap.set(cv::CAP_PROP_FRAME_WIDTH,  Constants::FRAME_WIDTH);
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, Constants::FRAME_HEIGHT);
 
     m_frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
     m_frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
@@ -57,8 +59,9 @@ bool Game::initialize() {
         return false;
     }
     cv::namedWindow(Constants::WINDOW_NAME, cv::WINDOW_NORMAL);
-    cv::setWindowProperty(Constants::WINDOW_NAME, cv::WND_PROP_AUTOSIZE, 0);
-    cv::resizeWindow(Constants::WINDOW_NAME, m_frameWidth, m_frameHeight);
+    cv::setWindowProperty(Constants::WINDOW_NAME, cv::WND_PROP_FULLSCREEN, 0);
+    cv::resizeWindow(Constants::WINDOW_NAME, Constants::FRAME_WIDTH, Constants::FRAME_HEIGHT);
+    cv::moveWindow(Constants::WINDOW_NAME, 100, 100);
     return true;
 }
 

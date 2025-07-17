@@ -10,7 +10,9 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <gameModeInterface.hpp>
+#include "gameModeInterface.hpp"
+
+#include "constants.hpp"
 
 //class Gui;
 
@@ -32,9 +34,8 @@ private:
     Player m_player;
     cv::CascadeClassifier faceCascade;
     cv::VideoCapture cap;
-    int m_frameWidth;
-    int m_frameHeight;
-    int m_score = 0;
+    int m_frameWidth = Constants::FRAME_WIDTH;
+    int m_frameHeight = Constants::FRAME_HEIGHT;
 };
 
 #endif // GAME_HPP

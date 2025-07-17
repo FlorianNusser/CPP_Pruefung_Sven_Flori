@@ -3,13 +3,15 @@
 #include "gui.hpp"
 #include "gamemode.hpp"
 
+#include <limits>
+
 
 Player Menu::namePlayer()
     {
         std::string name;
         std::cout << "-------------" << std::endl;
         std::cout << "Enter Playername: ";
-        std::cin >> name;
+        std::getline(std::cin, name);
         std::cout << "-------------" << std::endl;
         return Player(name);
     }
@@ -27,6 +29,13 @@ Playmode Menu::selectGamemode()
             std::cout << "Enter Gamemode (1,2): ";
             std::cout << "Please select a valid option (1 or 2): ";
             std::cin >> choice;
+
+        if(std::cin.fail()) {
+        std::cin.clear(); // Fehlerstatus löschen
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Rest der Zeile ignorieren
+        std::cout << "Put in a valid number!\n";
+        continue; // Schleife neu starten
+}
 
         switch (choice)
         {

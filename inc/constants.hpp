@@ -11,6 +11,8 @@ namespace Constants
     const std::string CASCADE_FILE_PATH = "haarcascade_frontalface_default.xml";
     const std::string WINDOW_NAME = "Face Detection Game";
     const std::string PLAYER_ID = "../playerID.txt";
+    const int FRAME_WIDTH = 640;
+    const int FRAME_HEIGHT = 480;
 }
 
 namespace DodgeTheBallsConfig
