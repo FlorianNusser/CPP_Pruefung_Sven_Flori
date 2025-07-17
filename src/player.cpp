@@ -1,11 +1,40 @@
 #include "player.hpp"
+#include "constants.hpp"
 #include <iostream>
+#include <fstream>
+#include <string>
 
-int Player::idSetter = 0;
-
-Player::Player(const std::string &name): m_name(name), m_id(idSetter)
+Player::Player(const std::string &name): m_name(name)
 {
-    idSetter++;
+    int idSetter = 0;;
+    //playerID Datei Einlesen
+    std::ifstream in(Constants::PLAYER_ID);
+    std::string idStr;
+    if (in >> idStr) {
+        try {
+            idSetter = std::stoi(idStr);
+        } catch (const std::invalid_argument&) {
+            std::cerr << "Fehler: ungültiger Wert in PLAYER_ID.txt\n";
+            idSetter = 0;
+        } catch (const std::out_of_range&) {
+            std::cerr << "Fehler: Zahl in PLAYER_ID.txt außerhalb des gültigen Bereichs\n";
+            idSetter = 0;
+        }
+    }
+    else
+    {
+        std::cerr << "Fehler beim Einlesen der ID!" << std::endl;
+    }
+    
+    idSetter ++;
+    m_id = idSetter;
+    //neue PlayerID in Datei schreiben
+    std::ofstream out(Constants::PLAYER_ID, std::ios::trunc);
+    if(!out)
+    {
+        std::cerr << "Error when trying to write in " << Constants::PLAYER_ID << std::endl;
+    }
+    out << idSetter;
 }
 
 Player::~Player()

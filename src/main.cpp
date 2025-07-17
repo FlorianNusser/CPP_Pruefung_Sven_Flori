@@ -10,7 +10,7 @@
 
 int main()
 {
-//Menü
+    //Menü
     Menu menu;
     Player player = menu.namePlayer();
 
