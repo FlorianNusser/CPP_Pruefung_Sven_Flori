@@ -31,10 +31,17 @@ void DodgeTheBalls::spawnBall() {
     int radius = radiusDist(RandomGenerator::getGenerator());
     const cv::Point2f position = cv::Point2f(xSpawnDist(RandomGenerator::getGenerator()), 0);
 
-    Color randomColor = getRandomColor();
-    auto ball = std::make_shared<Ball>(position, randomColor, velocityY, radius);
+    Color ballColor;
+    if (m_playmode == Playmode::DodgeTheBalls)
+    {
+        ballColor = getRandomColor();
+    }
+    else
+    {
+        ballColor = DodgeTheBallsConfig::BALL_COLOR;
+    }
 
-   
+    auto ball = std::make_shared<Ball>(position, ballColor, velocityY, radius);
 
     m_balls.push_back(ball);
 }
