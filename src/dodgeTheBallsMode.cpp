@@ -3,13 +3,13 @@
 
 // Initialisiere m_logic mit Dummy-Größe; echte Werte setzt initialize()
 DodgeTheBallsMode::DodgeTheBallsMode()
-  : m_logic(0, 0),
+  : m_logic(0, 0, Playmode::DodgeTheBalls, true),
     m_spawnCounter(0)
 {}
 
 void DodgeTheBallsMode::initialize(int screenWidth, int ScreenHeight)
 {
-    m_logic = DodgeTheBalls(screenWidth, ScreenHeight);
+    m_logic = DodgeTheBalls(screenWidth, ScreenHeight, Playmode::DodgeTheBalls);
 }
 
 void DodgeTheBallsMode::spawnShape()

@@ -17,6 +17,6 @@ cv::Scalar getScalarFromColor(Color color) {
         case Color::YELLOW:
             return cv::Scalar(0, 255, 255);
         default:
-            throw std::runtime_error("Unknown Color enum value");
+            throw std::invalid_argument("Unknown Color enum value");
     }
 }

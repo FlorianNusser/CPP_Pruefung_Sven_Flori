@@ -6,13 +6,13 @@
 #include <vector>
 #include <memory>
 #include <ball.hpp>
-
+#include "gamemode.hpp"
 
 
 class DodgeTheBalls {
 public:
 
-    DodgeTheBalls(int width, int height);
+    DodgeTheBalls(int width, int height, Playmode playmode, bool useRandomColors = true);
     virtual ~DodgeTheBalls();
 
     void spawnBall();
@@ -32,6 +32,9 @@ private:
     std::vector<std::shared_ptr<Ball>> m_balls;
     int m_screenWidth;
     int m_screenHeight;
+    Color getRandomColor();
+    Playmode m_playmode;
+    bool m_useRandomColors;
 };
 
 

@@ -12,7 +12,7 @@
 #include <chrono> // for time control
 
 
-Game::Game(const std::string& cascadePath, Playmode playmode, Player player) : m_playmode(playmode), m_dodgeTheBalls(640, 480),m_catchTheSquares(640, 480), m_gui(*this, cascadePath, playmode), m_player(player)
+Game::Game(const std::string& cascadePath, Playmode playmode, Player player) : m_playmode(playmode), m_dodgeTheBalls(640, 480, playmode),m_catchTheSquares(640, 480), m_gui(*this, cascadePath, playmode), m_player(player)
 {
     if (!faceCascade.load(cascadePath))
     {

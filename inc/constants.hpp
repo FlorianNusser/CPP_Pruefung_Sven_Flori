@@ -2,6 +2,7 @@
 #define CONSTANTS_HPP
 
 #include <string>
+#include "color.hpp"
 
 namespace Constants
 {
