@@ -1,0 +1,211 @@
+
+classDiagram
+    class Ball {
+        -int m_radius
+        +Ball(cv::Point2f position, Color color, int velocity, int radius)
+        +~Ball()
+        +int getRadius() const
+    }
+    class CatchTheSquares {
+        -std::vector<std::shared_ptr<Square>> m_squares
+        -int m_screenWidth
+        -int m_screenHeight
+        +CatchTheSquares(int width, int height)
+        +~CatchTheSquares()
+        +void spawnSquares()
+        +void updateSquares()
+        +void drawSquares(cv::Mat& frame) const
+        +bool checkCollision(const cv::Rect& playerRect) const
+        +void removeOffscreenSquares()
+        +void removeCollidedSquares(const cv::Rect& playerRect)
+        +const std::vector<std::shared_ptr<Square>>& getSquares() const
+    }
+    class CatchTheSquaresMode {
+        -CatchTheSquares m_catchLogic
+        -DodgeTheBalls m_dodgeLogic
+        -int m_catchSpawnCounter
+        -int m_dodgeSpawnCounter
+        -int m_spawnedShapes
+        -int m_shapeLimit
+        +CatchTheSquaresMode()
+        +~CatchTheSquaresMode() override
+        +void initialize(int screenWidth, int screenHeight) override
+        +void spawnShape() override
+        +void update() override
+        +void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) override
+        +void draw(cv::Mat& frame) override
+        +bool isGameOver() override
+        +LeaderboardEntry getLeaderboardEntry(Player& player, int score) const override
+        +int getSpawnedShapes() const override
+        +int getActiveShapes() const override
+        +int getScore() const override
+    }
+    class Color {
+        <<enumeration>>
+        WHITE
+        BLACK
+        RED
+        GREEN
+        BLUE
+        PURPLE
+        YELLOW
+    }
+    class DodgeTheBalls {
+        -std::vector<std::shared_ptr<Ball>> m_balls
+        -int m_screenWidth
+        -int m_screenHeight
+        -Playmode m_playmode
+        -bool m_useRandomColors
+        +DodgeTheBalls(int width, int height, Playmode playmode, bool useRandomColors)
+        +~DodgeTheBalls()
+        +void spawnBall()
+        +void updateBalls()
+        +void drawBalls(cv::Mat& frame) const
+        +bool checkCollision(const cv::Rect& playerRect) const
+        +void removeOffscreenBalls()
+        +void calcScore(int& score)
+        +const std::vector<std::shared_ptr<Ball>>& getBalls() const
+        +void removeCollidedBalls(const cv::Rect& playerRect)
+        -Color getRandomColor()
+    }
+    class DodgeTheBallsMode {
+        -DodgeTheBalls m_logic
+        -int m_spawnCounter
+        -int m_spawnedShapes
+        +DodgeTheBallsMode()
+        +void initialize(int w, int h) override
+        +void spawnShape() override
+        +void update() override
+        +void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) override
+        +void draw(cv::Mat& frame) override
+        +LeaderboardEntry getLeaderboardEntry(Player& player, int score) const override
+        +bool isGameOver() override
+        +int getSpawnedShapes() const override
+        +int getActiveShapes() const override
+        +int getScore() const override
+    }
+    class Game {
+        -std::unique_ptr<GameModeInterface> m_gameMode
+        -Playmode m_playmode
+        -DodgeTheBalls m_dodgeTheBalls
+        -CatchTheSquares m_catchTheSquares
+        -Gui m_gui
+        -Player m_player
+        -cv::CascadeClassifier faceCascade
+        -cv::VideoCapture cap
+        -int m_frameWidth
+        -int m_frameHeight
+        +Game(const std::string& cascadePath, Playmode playmode, Player m_player)
+        +~Game()
+        +bool initialize()
+        +void startGame()
+        +void run()
+    }
+    class GameModeInterface {
+        <<abstract>>
+        -int m_score
+        +virtual ~GameModeInterface()
+        +virtual void initialize(int screenwidth, int screenheight) = 0
+        +virtual void spawnShape() = 0
+        +virtual void update() = 0
+        +virtual void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) = 0
+        +virtual void draw(cv::Mat& frame) = 0
+        +virtual LeaderboardEntry getLeaderboardEntry(Player& player, int score) const = 0
+        +virtual int getScore() const = 0
+        +virtual int getSpawnedShapes() const = 0
+        +virtual int getActiveShapes() const = 0
+        +virtual bool isGameOver() = 0
+    }
+    class Gui {
+        -cv::CascadeClassifier faceCascade
+        -int m_frameWidth
+        -int m_frameHeight
+        -Color m_textcolor
+        -Game& m_game
+        -Playmode m_playmode
+        -std::vector<cv::Rect> m_lastFaces
+        +Gui(Game& game, const std::string& cascadeFilePath, Playmode playmode)
+        +~Gui()
+        +bool initialize()
+        +void display()
+        +std::vector<cv::Rect> updateFrame(cv::Mat& frame)
+        +int getKeyboard()
+        +void showScore(cv::Mat& frame, int score)
+        +void showGameOver(cv::Mat& frame, int score, Player player)
+        +void showLeaderboard(cv::Mat& frame)
+        +void drawButton(cv::Mat& frame, const std::string& text, Anchor anchor)
+        -static std::vector<std::vector<std::string>> parseLeaderboardFile(const std::string& filename, Playmode mode)
+    }
+    class Leaderboard {
+        -std::string m_filename
+        -std::vector<LeaderboardEntry> m_entries
+        +Leaderboard(const std::string& filename)
+        +void load()
+        +void save()
+        +void addEntry(const LeaderboardEntry& entry)
+        +void addScoreFromGameMode(const GameModeInterface& mode, Player& player)
+        +std::vector<LeaderboardEntry> getSortedEntriesDodgeTheBalls() const
+        +std::vector<LeaderboardEntry> getSortedEntriesCatchTheSquares() const
+    }
+    class LeaderboardEntry {
+        +int playerId
+        +std::string playerName
+        +int score
+        +int userLimit
+    }
+    class Menu {
+        +Player namePlayer()
+        +Playmode selectGamemode()
+    }
+    class Player {
+        -std::string m_name
+        -int m_id
+        +Player(const std::string& name)
+        +~Player()
+        +int getId() const
+        +std::string getPlayername()
+        +void printProperties()
+    }
+    class RandomGenerator {
+        +static std::mt19937& getGenerator()
+    }
+    class Shape {
+        #Color m_color
+        #cv::Point2f m_position
+        #int m_velocityY
+        +Shape(const cv::Point2f& position, Color color, int velocityY)
+        +~Shape()
+        +Color getColor()
+        +cv::Point2f getPosition()
+        +int getVelocityY()
+        +void setPosition(const cv::Point2f& pos)
+    }
+    class Square {
+        -int m_sidelength
+        +Square(const cv::Point2f& position, Color color, int velocity, int sidelength)
+        +~Square()
+        +int getSidelength() const
+        +cv::Rect getRect() const
+    }
+    class Anchor {
+        <<enumeration>>
+        BottomLeft
+        BottomRight
+    }
+    class Playmode {
+        <<enumeration>>
+        CatchTheSquares
+        DodgeTheBalls
+    }
+    Ball --|> Shape
+    Square --|> Shape
+    CatchTheSquaresMode --|> GameModeInterface
+    DodgeTheBallsMode --|> GameModeInterface
+    CatchTheSquaresMode "1" *-- "1" CatchTheSquares
+    CatchTheSquaresMode "1" *-- "1" DodgeTheBalls
+    DodgeTheBallsMode "1" *-- "1" DodgeTheBalls
+    Game "1" *-- "1" GameModeInterface
+    Game "1" *-- "1" Gui
+    Game "1" *-- "1" Player
+    Gui "1" *-- "1" Game
+    Leaderboard "1" *-- "*" LeaderboardEntry
