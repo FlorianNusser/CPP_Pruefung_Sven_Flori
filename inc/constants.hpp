@@ -38,7 +38,7 @@ namespace CatchTheSquaresConfig
     constexpr int MAX_SQUARE_VELOCITY   = 5;
     constexpr int SQUARE_INTERVAL       = 45;
     constexpr int BALL_INTERVAL         = 30;
-    constexpr Color SQUARECOLOR         = Color::YELLOW;
+    constexpr Color SQUARECOLOR         = Color::GREEN;
     constexpr int X_SPAWN_BORDER        = 20;
 }
 

@@ -18,7 +18,7 @@ Color DodgeTheBalls::getRandomColor()
         std::uniform_int_distribution<int> colorDist(2, 4); // Enum-Values for blue, red and green
         return static_cast<Color>(colorDist(RandomGenerator::getGenerator()));
     }
-    return DodgeTheBallsConfig::BallColor; // Standardfarbe für andere Modi
+    return DodgeTheBallsConfig::BALL_COLOR; // Standardfarbe für andere Modi
 
 }
 
