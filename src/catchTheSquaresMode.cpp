@@ -7,16 +7,23 @@ CatchTheSquaresMode::CatchTheSquaresMode()
     m_catchSpawnCounter(0),
     m_dodgeSpawnCounter(0)
 {
-    std::cout << "How many Shapes do you want to be spawned: ";
-    std::cin >> m_shapeLimit;
-    std::cout << std::endl;
+    //std::cout << "How many Shapes do you want to be spawned: ";
+    //std::cin >> m_shapeLimit;
+    //std::cout << std::endl;
 }
 
 void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
 {
     // Erzeuge beide Logik‐Instanzen mit realen Dimensionen
     m_catchLogic = CatchTheSquares(screenWidth, screenHeight);
+
     m_dodgeLogic = DodgeTheBalls(screenWidth, screenHeight, Playmode::DodgeTheBalls);
+
+    
+    std::cout << "How many Shapes do you want to be spawned: ";
+    std::cin >> m_shapeLimit;
+    std::cout << std::endl;
+
 }
 
 void CatchTheSquaresMode::spawnShape() {
@@ -91,4 +98,13 @@ bool CatchTheSquaresMode::isGameOver()
 
 int CatchTheSquaresMode::getScore() const {
     return m_score;
+}
+
+LeaderboardEntry CatchTheSquaresMode::getLeaderboardEntry(Player& player, int score) const {
+    LeaderboardEntry entry;
+    entry.playerId = player.getId();
+    entry.playerName = player.getPlayername();
+    entry.score = score;
+    entry.userLimit = m_shapeLimit;
+    return entry;
 }

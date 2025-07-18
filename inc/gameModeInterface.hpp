@@ -1,6 +1,9 @@
 #ifndef GAME_MODE_INTERFACE
 #define GAME_MODE_INTERFACE
 
+#include "leaderboard.hpp"
+#include "player.hpp"
+
 #include <opencv2/opencv.hpp>
 #include <vector>
 
@@ -14,6 +17,7 @@ public:
     virtual void update() = 0;
     virtual void handleCollisions(const std::vector<cv::Rect>& faces, bool& gameOver) = 0;
     virtual void draw(cv::Mat& frame) = 0;
+    virtual LeaderboardEntry getLeaderboardEntry(Player& player, int score) const = 0;
 
     //Getter
     virtual int getScore() const = 0;

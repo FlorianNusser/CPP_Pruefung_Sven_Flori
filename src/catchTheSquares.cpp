@@ -12,7 +12,7 @@ CatchTheSquares::~CatchTheSquares()
 {
 }
 
-void CatchTheSquares::spawnSquares() 
+void CatchTheSquares::spawnSquares()
 {
     std::uniform_int_distribution<int> squareSizeDist(CatchTheSquaresConfig::MIN_SQUARE_SIZE, CatchTheSquaresConfig::MAX_SQUARE_SIZE);  // Zufällige Größe der Quadrate
     std::uniform_int_distribution<int> velocityYDist(CatchTheSquaresConfig::MIN_SQUARE_VELOCITY, CatchTheSquaresConfig::MAX_SQUARE_VELOCITY);  // Fallgeschwindigkeit
@@ -26,9 +26,9 @@ void CatchTheSquares::spawnSquares()
     m_squares.push_back(square);
 }
 
-void CatchTheSquares::updateSquares() 
+void CatchTheSquares::updateSquares()
 {
-    for (auto& square : m_squares) 
+    for (auto& square : m_squares)
     {
         cv::Point2f pos = square->getPosition();
         pos.y += square->getVelocityY();
@@ -36,21 +36,21 @@ void CatchTheSquares::updateSquares()
     }
 }
 
-void CatchTheSquares::drawSquares(cv::Mat& frame) const 
+void CatchTheSquares::drawSquares(cv::Mat& frame) const
 {
-    for (const auto& square : m_squares) 
+    for (const auto& square : m_squares)
     {
         cv::Rect rect = square->getRect();
         cv::rectangle(frame, rect, getScalarFromColor(square->getColor()), cv::FILLED);
     }
 }
 
-bool CatchTheSquares::checkCollision(const cv::Rect& playerRect) const 
+bool CatchTheSquares::checkCollision(const cv::Rect& playerRect) const
 {
-    for (const auto& square : m_squares) 
+    for (const auto& square : m_squares)
     {
         cv::Rect squareRect = square->getRect();
-        if ((playerRect & squareRect).area() > 0) 
+        if ((playerRect & squareRect).area() > 0)
         {
             return true;
         }
