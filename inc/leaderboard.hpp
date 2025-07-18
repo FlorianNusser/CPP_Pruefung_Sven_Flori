@@ -12,7 +12,7 @@ struct LeaderboardEntry {
     int playerId;
     std::string playerName;
     int score;
-    int userLimit; // 0 für DodgeTheBalls, >0 für CatchTheSquares
+    int userLimit; // 0 for DodgeTheBalls, >0 for CatchTheSquares
 };
 
 class Leaderboard {

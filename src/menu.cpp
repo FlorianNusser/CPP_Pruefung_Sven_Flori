@@ -31,10 +31,10 @@ Playmode Menu::selectGamemode()
             std::cin >> choice;
 
         if(std::cin.fail()) {
-        std::cin.clear(); // Fehlerstatus löschen
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Rest der Zeile ignorieren
+        std::cin.clear(); // Clear error status
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //ignore rest of the line
         std::cout << "Put in a valid number!\n";
-        continue; // Schleife neu starten
+        continue; // restart loop
 }
 
         switch (choice)

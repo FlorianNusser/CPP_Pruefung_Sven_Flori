@@ -17,13 +17,12 @@ public:
 
     void spawnBall();
     void updateBalls();
-    //wird durch drawBall Klasse ersetzt
     void drawBalls(cv::Mat& frame) const;
     bool checkCollision(const cv::Rect& playerRect) const;
     void removeOffscreenBalls();
     void calcScore(int &score);
 
-    // Zugriff auf aktuelle Bälle (z.B. für Tests)
+   // Access to current balls (e.g. for tests)
     const std::vector<std::shared_ptr<Ball>>& getBalls() const;
 
     void removeCollidedBalls(const cv::Rect& playerRect);

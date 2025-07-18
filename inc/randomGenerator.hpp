@@ -7,7 +7,7 @@ class RandomGenerator {
 public:
     static std::mt19937& getGenerator() {
         static std::random_device rd;
-        static std::mt19937 gen(rd());  // wird nur einmal erzeugt
+        static std::mt19937 gen(rd());  // is only created once
         return gen;
     }
 };

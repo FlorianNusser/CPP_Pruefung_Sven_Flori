@@ -11,13 +11,13 @@ public:
     Shape(const cv::Point2f& position, Color color, int velocityY);
     virtual ~Shape();
 
-    //Getter zu Shape
+    //Getter for Shape
     Color getColor();
     cv::Point2f getPosition();
     int getVelocityY();
 
 
-    //Setter zu Shape
+    //Setter for Shape
     void setPosition(const cv::Point2f& pos);
 
 

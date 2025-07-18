@@ -44,14 +44,14 @@ namespace CatchTheSquaresConfig
 
 namespace GuiConstants
 {
-    // -- Allgemein --
+    // -- general --
     constexpr int    FONT_FACE   = cv::FONT_HERSHEY_SIMPLEX;
-    //–– Gesichtserkennung –-
+    //–– Face detection –-
     constexpr double FACE_DETECT_SCALE      = 1.1;
     constexpr int    FACE_DETECT_NEIGHBORS  = 3;
     constexpr int    FACE_DETECT_FLAGS      = 0;
 
-    //–– Score-Anzeige (showScore) ––
+    //–– Score-Display (showScore) ––
     const int SCORE_X_COORDINATE = 10;
     const int SCORE_Y_COORDINATE = 25;
 
@@ -63,13 +63,12 @@ namespace GuiConstants
     constexpr double GO_TEXT_SCALE   = 1.0;
     constexpr int    GO_THICKNESS    = 2;
     const     cv::Scalar GO_COLOR    = cv::Scalar(0, 0, 255);
-    constexpr int    GO_BASELINE     = 0;    // wird beim getTextSize benötigt
-
+    constexpr int    GO_BASELINE     = 0;    // is required for getTextSize
     //–– Leaderboard-Screen ––
     constexpr double LB_TITLE_SCALE   = 1.2;
     constexpr int    LB_TITLE_Y       = 50;
     constexpr int    LB_LINE_HEIGHT    = 30;
-    // Spalten-X-Koordinaten
+    // Coordinates for Columns
     constexpr int    LB_COL_ID_X      = 50;
     constexpr int    LB_COL_NAME_X    = 120;
     constexpr int    LB_COL_SCORE_X   = 350;

@@ -6,11 +6,12 @@ CatchTheSquaresMode::CatchTheSquaresMode()
     m_dodgeLogic(0, 0, Playmode::CatchTheSquares, false),
     m_catchSpawnCounter(0),
     m_dodgeSpawnCounter(0)
-{}
+{
+}
 
 void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
 {
-    // Erzeuge beide Logik‐Instanzen mit realen Dimensionen
+// Create both logic instances with real dimensions
     m_catchLogic = CatchTheSquares(screenWidth, screenHeight);
 
     m_dodgeLogic = DodgeTheBalls(screenWidth, screenHeight, Playmode::CatchTheSquares);
@@ -23,7 +24,7 @@ void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
 }
 
 void CatchTheSquaresMode::spawnShape() {
-    // Alle CATCH_INTERVAL Frames ein Quadrat
+    // all CATCH_INTERVAL frames one Square
 
 
     if (m_catchSpawnCounter++ % CatchTheSquaresConfig::SQUARE_INTERVAL == 0 && m_shapeLimit > m_spawnedShapes) 
@@ -31,7 +32,7 @@ void CatchTheSquaresMode::spawnShape() {
         m_catchLogic.spawnSquares();
         ++m_spawnedShapes;
     }
-    // Alle DODGE_INTERVAL Frames einen Ball (als Hindernis)
+    // all DODGE_INTERVAL frames one Ball (as obstacle)
     if (m_dodgeSpawnCounter++ % CatchTheSquaresConfig::BALL_INTERVAL == 0 && m_shapeLimit > m_spawnedShapes) 
     {
         m_dodgeLogic.spawnBall();
@@ -41,11 +42,11 @@ void CatchTheSquaresMode::spawnShape() {
 
 void CatchTheSquaresMode::update()
 {
-    // Positionen updaten
+    // update position
     m_catchLogic.updateSquares();
     m_dodgeLogic.updateBalls();
 
-    // Offscreen‐Objekte entfernen
+    // remove offscreen objects
     m_catchLogic.removeOffscreenSquares();
     m_dodgeLogic.removeOffscreenBalls();
 }
@@ -54,13 +55,13 @@ void CatchTheSquaresMode::handleCollisions(const std::vector<cv::Rect>& faces, b
 {
     for (auto const& face : faces)
     {
-        // Gefangene Quadrate erhöhen den Score
+        // caught squares increase the score
         if (m_catchLogic.checkCollision(face))
         {
             ++m_score;
             m_catchLogic.removeCollidedSquares(face);
         }
-        // Ball‐Kollision beendet das Spiel
+        // ball collision ends the game
         else if (m_dodgeLogic.checkCollision(face))
         {
             m_dodgeLogic.removeCollidedBalls(face);
