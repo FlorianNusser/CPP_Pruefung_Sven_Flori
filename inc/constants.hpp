@@ -2,8 +2,11 @@
 #define CONSTANTS_HPP
 
 #include <string>
+
+
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp> //Für die Schriftart
+
 #include "color.hpp"
 
 namespace Constants

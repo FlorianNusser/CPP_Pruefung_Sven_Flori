@@ -4,12 +4,23 @@
 #include "constants.hpp"
 #include <algorithm>
 
-DodgeTheBalls::DodgeTheBalls(int width, int height)
-    : m_screenWidth(width), m_screenHeight(height)
+DodgeTheBalls::DodgeTheBalls(int width, int height, Playmode playmode, bool useRandomColors)
+    : m_screenWidth(width), m_screenHeight(height), m_playmode(playmode)
 {}
 
 DodgeTheBalls::~DodgeTheBalls()
 {}
+
+Color DodgeTheBalls::getRandomColor() 
+{
+    if(m_useRandomColors)
+    {
+        std::uniform_int_distribution<int> colorDist(2, 4); // Enum-Values for blue, red and green
+        return static_cast<Color>(colorDist(RandomGenerator::getGenerator()));
+    }
+    return DodgeTheBallsConfig::BallColor; // Standardfarbe für andere Modi
+
+}
 
 void DodgeTheBalls::spawnBall() {
     std::uniform_int_distribution<int> radiusDist(DodgeTheBallsConfig::MIN_RADIUS,DodgeTheBallsConfig::MAX_RADIUS);
@@ -19,7 +30,12 @@ void DodgeTheBalls::spawnBall() {
     int velocityY = velocityDist(RandomGenerator::getGenerator());
     int radius = radiusDist(RandomGenerator::getGenerator());
     const cv::Point2f position = cv::Point2f(xSpawnDist(RandomGenerator::getGenerator()), 0);
-    auto ball = std::make_shared<Ball>(position, DodgeTheBallsConfig::BALL_COLOR, velocityY, radius);
+
+    Color randomColor = getRandomColor();
+    auto ball = std::make_shared<Ball>(position, randomColor, velocityY, radius);
+
+   
+
     m_balls.push_back(ball);
 }
 

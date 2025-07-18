@@ -3,7 +3,7 @@
 
 CatchTheSquaresMode::CatchTheSquaresMode()
   : m_catchLogic(0, 0),
-    m_dodgeLogic(0, 0),
+    m_dodgeLogic(0, 0, Playmode::DodgeTheBalls, false),
     m_catchSpawnCounter(0),
     m_dodgeSpawnCounter(0)
 {
@@ -16,10 +16,14 @@ void CatchTheSquaresMode::initialize(int screenWidth, int screenHeight)
 {
     // Erzeuge beide Logik‐Instanzen mit realen Dimensionen
     m_catchLogic = CatchTheSquares(screenWidth, screenHeight);
-    m_dodgeLogic = DodgeTheBalls(screenWidth, screenHeight);
+
+    m_dodgeLogic = DodgeTheBalls(screenWidth, screenHeight, Playmode::DodgeTheBalls);
+
+    
     std::cout << "How many Shapes do you want to be spawned: ";
     std::cin >> m_shapeLimit;
     std::cout << std::endl;
+
 }
 
 void CatchTheSquaresMode::spawnShape() {
