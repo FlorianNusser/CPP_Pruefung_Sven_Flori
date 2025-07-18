@@ -24,7 +24,7 @@ namespace DodgeTheBallsConfig
     constexpr int MAX_RADIUS            = 20;
     constexpr int MIN_VELOCITY          = 5;
     constexpr int MAX_VELOCITY          = 10;
-    constexpr int X_SPAWN_BORDER        = 20; //20, damit die Bälle nicht aus dem Bildschirm hinaus ragen
+    constexpr int X_SPAWN_BORDER        = 20;
     constexpr int INITIAL_Y_POSITION    = 0;
     constexpr int SPAWN_INTERVAL        = 30;
     constexpr Color BALL_COLOR          = Color::RED;
