@@ -14,13 +14,13 @@ CatchTheSquares::~CatchTheSquares()
 
 void CatchTheSquares::spawnSquares()
 {
-    std::uniform_int_distribution<int> squareSizeDist(CatchTheSquaresConfig::MIN_SQUARE_SIZE, CatchTheSquaresConfig::MAX_SQUARE_SIZE);  // Zufällige Größe der Quadrate
-    std::uniform_int_distribution<int> velocityYDist(CatchTheSquaresConfig::MIN_SQUARE_VELOCITY, CatchTheSquaresConfig::MAX_SQUARE_VELOCITY);  // Fallgeschwindigkeit
-    std::uniform_int_distribution<int> xSpawnDist(CatchTheSquaresConfig::X_SPAWN_BORDER, m_screenWidth - CatchTheSquaresConfig::X_SPAWN_BORDER);  // Startposition X
+    std::uniform_int_distribution<int> squareSizeDist(CatchTheSquaresConfig::MIN_SQUARE_SIZE, CatchTheSquaresConfig::MAX_SQUARE_SIZE);  // random size for the squares
+    std::uniform_int_distribution<int> velocityYDist(CatchTheSquaresConfig::MIN_SQUARE_VELOCITY, CatchTheSquaresConfig::MAX_SQUARE_VELOCITY);  // Falling speed
+    std::uniform_int_distribution<int> xSpawnDist(CatchTheSquaresConfig::X_SPAWN_BORDER, m_screenWidth - CatchTheSquaresConfig::X_SPAWN_BORDER);  // start position X
 
     int velocityY = velocityYDist(RandomGenerator::getGenerator());
     int size = squareSizeDist(RandomGenerator::getGenerator());
-    // Quadrat oben am Bildschirmrand spawnen
+    // Spawn square at the top of the screen
     cv::Point2f position(xSpawnDist(RandomGenerator::getGenerator()), 0);
     auto square = std::make_shared<Square>(position, CatchTheSquaresConfig::SQUARECOLOR, velocityY, size);
     m_squares.push_back(square);
@@ -77,7 +77,7 @@ void CatchTheSquares::removeCollidedSquares(const cv::Rect& playerRect)
             [&playerRect](const std::shared_ptr<Square>& square) 
             {
                 cv::Rect squareRect = square->getRect();
-                return (playerRect & squareRect).area() > 0; // Kollisionsprüfung
+                return (playerRect & squareRect).area() > 0; // Collision check
             }),
         m_squares.end());
 }

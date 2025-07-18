@@ -29,7 +29,7 @@ private:
     std::unique_ptr<GameModeInterface> m_gameMode;
     Playmode m_playmode;
     DodgeTheBalls m_dodgeTheBalls;
-    CatchTheSquares m_catchTheSquares;  // Sicherstellen, dass dies deklariert ist
+    CatchTheSquares m_catchTheSquares;
     Gui m_gui;
     Player m_player;
     cv::CascadeClassifier faceCascade;

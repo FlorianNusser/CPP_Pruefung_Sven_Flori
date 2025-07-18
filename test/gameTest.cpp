@@ -13,14 +13,16 @@
 #include "gui.hpp"
 #include "randomGenerator.hpp"
 
-TEST(RandomGeneratorTest, GeneratorInstance) {
+TEST(RandomGeneratorTest, GeneratorInstance)
+{
     std::mt19937& gen1 = RandomGenerator::getGenerator();
     std::mt19937& gen2 = RandomGenerator::getGenerator();
     
-    EXPECT_EQ(&gen1, &gen2); // Sollte dieselbe Instanz zurückgeben
+    EXPECT_EQ(&gen1, &gen2); // Should return the same instance
 }
 
-TEST(RandomGeneratorTest, Distribution) {
+TEST(RandomGeneratorTest, Distribution)
+{
     std::uniform_int_distribution<int> dist(1, 10);
     int value = dist(RandomGenerator::getGenerator());
     
@@ -28,35 +30,40 @@ TEST(RandomGeneratorTest, Distribution) {
     EXPECT_LE(value, 10);
 }
 
-TEST(ColorTest, ColorToScalar) {
+TEST(ColorTest, ColorToScalar)
+{
     EXPECT_EQ(getScalarFromColor(Color::RED), cv::Scalar(0, 0, 255));
     EXPECT_EQ(getScalarFromColor(Color::GREEN), cv::Scalar(0, 255, 0));
     EXPECT_EQ(getScalarFromColor(Color::BLUE), cv::Scalar(255, 0, 0));
     EXPECT_EQ(getScalarFromColor(Color::YELLOW), cv::Scalar(0, 255, 255));
     
-    // Test für unbekannte Farbe
+    // Test for unknown color
     EXPECT_THROW(getScalarFromColor(static_cast<Color>(99)), std::invalid_argument);
 }
 
-TEST(DodgeTheBallsTest, CollisionDetection) {
-    DodgeTheBalls logic(640, 480, Playmode::DodgeTheBalls); // Spielmodus übergeben
+TEST(DodgeTheBallsTest, CollisionDetection)
+{
+    DodgeTheBalls logic(640, 480, Playmode::DodgeTheBalls);
+    
+    // Test-Ball mit bekannter Position hinzufügen
+    auto ball = std::make_shared<Ball>(cv::Point2f(100, 100), Color::RED, 0, 15);
+    const_cast<std::vector<std::shared_ptr<Ball>>&>(logic.getBalls()).push_back(ball);
 
-    // Ball erstellen und hinzufügen
-    logic.spawnBall();
+    // Rechteck das kollidieren sollte (überlappt mit Ball bei 100,100 mit Radius 15)
+    cv::Rect collidingRect(95, 95, 30, 30);
+    EXPECT_TRUE(logic.checkCollision(collidingRect));
 
-    // Spieler-Rect das kollidiert
-    cv::Rect playerRect(90, 90, 30, 30);
-    EXPECT_TRUE(logic.checkCollision(playerRect));
-
-    // Spieler-Rect ohne Kollision
+    // Rechteck das nicht kollidieren sollte
     cv::Rect safeRect(200, 200, 30, 30);
     EXPECT_FALSE(logic.checkCollision(safeRect));
 }
 
-TEST(CatchTheSquaresTest, CollisionDetection) {
+
+TEST(CatchTheSquaresTest, CollisionDetection)
+{
     CatchTheSquares logic(640, 480);
     
-    // Temporär const entfernen (nur für Tests)
+    // Temporarily remove const (only for tests)
     const_cast<std::vector<std::shared_ptr<Square>>&>(logic.getSquares()).push_back(
         std::make_shared<Square>(cv::Point2f(100, 100), Color::GREEN, 0, 20)
     );
@@ -68,7 +75,8 @@ TEST(CatchTheSquaresTest, CollisionDetection) {
     EXPECT_FALSE(logic.checkCollision(safeRect));
 }
 
-TEST(BallTest, ConstructorAndGetters) {
+TEST(BallTest, ConstructorAndGetters)
+{
     Ball ball(cv::Point2f(100, 150), Color::BLUE, 5, 15);
     EXPECT_EQ(ball.getPosition(), cv::Point2f(100, 150));
     EXPECT_EQ(ball.getColor(), Color::BLUE);
@@ -76,7 +84,8 @@ TEST(BallTest, ConstructorAndGetters) {
     EXPECT_EQ(ball.getRadius(), 15);
 }
 
-TEST(SquareTest, ConstructorAndGetters) {
+TEST(SquareTest, ConstructorAndGetters)
+{
     Square square(cv::Point2f(200, 250), Color::GREEN, 3, 25);
     EXPECT_EQ(square.getPosition(), cv::Point2f(200, 250));
     EXPECT_EQ(square.getColor(), Color::GREEN);
@@ -87,7 +96,8 @@ TEST(SquareTest, ConstructorAndGetters) {
     EXPECT_EQ(square.getRect(), expectedRect);
 }
 
-TEST(DodgeTheBallsModeTest, Initialization) {
+TEST(DodgeTheBallsModeTest, Initialization)
+{
     DodgeTheBallsMode mode;
     mode.initialize(800, 600);
     EXPECT_EQ(mode.getSpawnedShapes(), 0);
@@ -96,7 +106,8 @@ TEST(DodgeTheBallsModeTest, Initialization) {
     EXPECT_FALSE(mode.isGameOver());
 }
 
-TEST(CatchTheSquaresModeTest, Initialization) {
+TEST(CatchTheSquaresModeTest, Initialization)
+{
     CatchTheSquaresMode mode;
     mode.initialize(800, 600);
     EXPECT_EQ(mode.getSpawnedShapes(), 0);
@@ -105,23 +116,25 @@ TEST(CatchTheSquaresModeTest, Initialization) {
     EXPECT_FALSE(mode.isGameOver());
 }
 
-TEST(MenuTest, PlayerNameInput) {
+TEST(MenuTest, PlayerNameInput)
+{
     Menu menu;
     
-    // Simuliere Eingabe
+    // Simulate input
     std::istringstream input("John\n");
     std::streambuf* origCin = std::cin.rdbuf(input.rdbuf());
     
     Player p = menu.namePlayer();
-    std::cin.rdbuf(origCin); // Zurücksetzen
+    std::cin.rdbuf(origCin); // Reset
     
     EXPECT_EQ(p.getPlayername(), "John");
 }
 
-TEST(MenuTest, GameModeSelection) {
+TEST(MenuTest, GameModeSelection)
+{
     Menu menu;
     
-    // Simuliere Eingabe für DodgeTheBalls
+    // Simulate input for DodgeTheBalls
     std::istringstream input1("1\n");
     std::streambuf* origCin = std::cin.rdbuf(input1.rdbuf());
     
@@ -129,7 +142,7 @@ TEST(MenuTest, GameModeSelection) {
     std::cin.rdbuf(origCin);
     EXPECT_EQ(mode1, Playmode::DodgeTheBalls);
     
-    // Simuliere Eingabe für CatchTheSquares
+    // Simulate input for CatchTheSquares
     std::istringstream input2("2\n");
     origCin = std::cin.rdbuf(input2.rdbuf());
     
@@ -138,9 +151,11 @@ TEST(MenuTest, GameModeSelection) {
     EXPECT_EQ(mode2, Playmode::CatchTheSquares);
 }
 
-TEST(ShapeTest, BaseFunctionality) {
-    // Konkrete Klasse für Test
-    class TestShape : public Shape {
+TEST(ShapeTest, BaseFunctionality)
+{
+    // Concrete class for testing
+    class TestShape : public Shape
+    {
     public:
         TestShape() : Shape(cv::Point2f(50, 60), Color::RED, 5) {}
     };

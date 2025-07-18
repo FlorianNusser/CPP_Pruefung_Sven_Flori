@@ -30,7 +30,8 @@ Game::~Game()
     cv::destroyAllWindows();
 }
 
-bool Game::initialize() {
+bool Game::initialize() 
+{
     cap.open(0);
     if (!cap.isOpened())
     {
@@ -42,7 +43,7 @@ bool Game::initialize() {
 
     m_frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
     m_frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-    // hier den neuen Mode vorbereiten
+    // prepare the new game mode
     switch(m_playmode)
     {
         case Playmode::DodgeTheBalls:
@@ -77,7 +78,7 @@ void Game::run()
 
     while (!gameOver)
     {
-        //0. Frame holen
+        //get 0. Frame from camera
         cap >> frame;
         if (frame.empty())
         {
@@ -86,13 +87,13 @@ void Game::run()
         }
         cv::flip(frame, frame, 1);
 
-        // 1. Frame und Gesichter aktualisieren & anzeigen
+        // show faces and update the game state
         std::vector<cv::Rect> faces = m_gui.updateFrame(frame);
-        // *** Neuer Polymorpher Modus-Aufruf ***
-        m_gameMode->spawnShape();                         // Ball spawnen
-        m_gameMode->update();                      // Position updaten & Score
+        // *** New Polymorphic Mode Call ***
+        m_gameMode->spawnShape();                         // spawn new Shapes
+        m_gameMode->update();                      // update positions of Shapes
         m_gameMode->handleCollisions(faces, gameOver);
-        m_gameMode->draw(frame);                          // Bälle zeichnen
+        m_gameMode->draw(frame);                          // draw Shapes on the frame
 
         // Check if game is over
         if (m_gameMode->isGameOver()) 
@@ -106,7 +107,7 @@ void Game::run()
             break;
         }
     }
-    //Leaderboard Eintrag hinzufügen
+
     std::string leaderboardFile;
     if (m_playmode == Playmode::DodgeTheBalls)
     {
@@ -121,26 +122,24 @@ void Game::run()
     lb.load();
     lb.addScoreFromGameMode(*m_gameMode, m_player);
 
-    // --- Game-Over-Bildschirm ---
+    // --- Game-Over-Screen ---
     cv::Mat gameOverFrame(frame.size(), frame.type());
     while (true)
     {
-        // Frame schwarz füllen und GameOver-UI rendern
         gameOverFrame.setTo(cv::Scalar::all(0));
         m_gui.showGameOver(gameOverFrame, m_gameMode->getScore(), m_player);
-
-        // auf Bildschirm bringen
+        // Show the game over screen
         cv::imshow(Constants::WINDOW_NAME, gameOverFrame);
 
-        // Taste abfragen
+        // Handle keyboard input
         int key = m_gui.getKeyboard(); 
         if (key == 27)  // ESC
         {    
             break;
         }
-        else if (key == 'l' || key == 'L')  // L für Leaderboard
+        else if (key == 'l' || key == 'L')  // L for Leaderboard
         {
-            // Leaderboard anzeigen
+            // show the leaderboard
             cv::Mat lbFrame(frame.size(), frame.type());
             while (true)
             {
@@ -149,7 +148,7 @@ void Game::run()
                 cv::imshow(Constants::WINDOW_NAME, lbFrame);
             
                 int lbKey = m_gui.getKeyboard();
-                if (lbKey == 27)  // ESC zurück zum GameOver
+                if (lbKey == 27)  // ESC back to game over screen
                 {
                     break;
                 }
@@ -163,8 +162,8 @@ void Game::run()
 void Game::startGame()
 {
     std::cout << "Press Enter to start the game..." << std::endl;
-    std::cin.ignore(); // Überspringt das vorherige Eingabezeichen
-    std::cin.get(); // Warten auf Enter-Taste
+    std::cin.ignore();
+    std::cin.get(); // wait for keyboard enter
     std::cout << "\n";
 }
 

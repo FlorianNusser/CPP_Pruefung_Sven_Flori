@@ -13,7 +13,7 @@ cv::Scalar getScalarFromColor(Color color) {
         case Color::BLUE:
             return cv::Scalar(255, 0, 0);
         case Color::PURPLE:
-            return cv::Scalar(255, 0, 255); // Magenta als Purple
+            return cv::Scalar(255, 0, 255); // Magenta as purple
         case Color::YELLOW:
             return cv::Scalar(0, 255, 255);
         default:

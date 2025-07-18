@@ -10,7 +10,7 @@
 #include "dodgeTheBalls.hpp"
 #include "constants.hpp"
 
-class Game; //Vorwärtsdeklaration
+class Game; //Forward declaration
 
 //Anchor for Button
 enum class Anchor { BottomLeft, BottomRight };

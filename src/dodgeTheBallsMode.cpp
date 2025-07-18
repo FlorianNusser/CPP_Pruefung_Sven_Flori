@@ -1,7 +1,7 @@
 #include "dodgeTheBallsMode.hpp"
 #include "constants.hpp"
 
-// Initialisiere m_logic mit Dummy-Größe; echte Werte setzt initialize()
+
 DodgeTheBallsMode::DodgeTheBallsMode()
   : m_logic(0, 0, Playmode::DodgeTheBalls, true),
     m_spawnCounter(0)
@@ -45,25 +45,29 @@ void DodgeTheBallsMode::draw(cv::Mat& frame)
     m_logic.drawBalls(frame);
 }
 
-//Falls man noch Counter in DodgeTheBalls will
-bool DodgeTheBallsMode::isGameOver() {
-    // Beispiel: Immer false, außer du willst auch für diesen Modus ein Limit
+
+bool DodgeTheBallsMode::isGameOver() 
+{
     return false;
 }
 
-int DodgeTheBallsMode::getSpawnedShapes() const {
+int DodgeTheBallsMode::getSpawnedShapes() const 
+{
     return m_spawnedShapes;
 }
 
-int DodgeTheBallsMode::getActiveShapes() const {
+int DodgeTheBallsMode::getActiveShapes() const 
+{
     return m_logic.getBalls().size();
 }
 
-int DodgeTheBallsMode::getScore() const {
+int DodgeTheBallsMode::getScore() const 
+{
     return m_score;
 }
 
-LeaderboardEntry DodgeTheBallsMode::getLeaderboardEntry(Player& player, int score) const {
+LeaderboardEntry DodgeTheBallsMode::getLeaderboardEntry(Player& player, int score) const 
+{
     LeaderboardEntry entry;
     entry.playerId = player.getId();
     entry.playerName = player.getPlayername();

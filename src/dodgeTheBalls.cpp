@@ -18,7 +18,7 @@ Color DodgeTheBalls::getRandomColor()
         std::uniform_int_distribution<int> colorDist(2, 4); // Enum-Values for blue, red and green
         return static_cast<Color>(colorDist(RandomGenerator::getGenerator()));
     }
-    return DodgeTheBallsConfig::BALL_COLOR; // Standardfarbe für andere Modi
+    return DodgeTheBallsConfig::BALL_COLOR; // default color
 
 }
 
@@ -86,7 +86,7 @@ void DodgeTheBalls::removeCollidedBalls(const cv::Rect& playerRect)
         std::remove_if(m_balls.begin(), m_balls.end(),
             [&playerRect](const std::shared_ptr<Ball>& ball) 
             {
-                // Rechteck-Kollisionslogik
+                // Rectangle collision logic
                 cv::Point2f pos = ball->getPosition();
                 float radius = ball->getRadius();
 
@@ -95,16 +95,16 @@ void DodgeTheBalls::removeCollidedBalls(const cv::Rect& playerRect)
                 float rectWidth = static_cast<float>(playerRect.width);
                 float rectHeight = static_cast<float>(playerRect.height);
 
-                // Finde den nächsten Punkt des Rechtecks zum Mittelpunkt des Balls
+                // Find the closest point of the rectangle to the center of the ball
                 float closestX = std::max(rectX, std::min(pos.x, rectX + rectWidth));
                 float closestY = std::max(rectY, std::min(pos.y, rectY + rectHeight));
 
-                // Berechne die Distanz zwischen dem Ball-Mittelpunkt und dem nächsten Punkt
+               // Calculate the distance between the ball center and the nearest point
                 float distanceX = pos.x - closestX;
                 float distanceY = pos.y - closestY;
                 float distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
 
-                // Entferne den Ball, wenn er mit dem Rechteck kollidiert
+                // Remove the ball when it collides with the rectangle
                 return distanceSquared < (radius * radius);
             }),
         m_balls.end());
@@ -131,7 +131,7 @@ void DodgeTheBalls::calcScore(int& m_score)
     {
         if (ball->getPosition().y - ball->getRadius() > m_screenHeight)
         {
-            ++m_score; // Erhöhe den Score
+            ++m_score; // increase the score
         }
     }
 }

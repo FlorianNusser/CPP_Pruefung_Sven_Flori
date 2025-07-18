@@ -8,7 +8,7 @@
 Gui::Gui(Game& game, const std::string& cascadeFilePath, Playmode playmode)
     :m_game(game), m_textcolor(Color::WHITE), m_frameWidth(0), m_frameHeight(0), m_playmode(playmode)
 {
-    // Lädt "facaCascade" und überprüft, ob es erfolgreich war
+    // Load face cascade and verify successful loading
     if (!faceCascade.load(cascadeFilePath))
     {
         std::cerr << "Error loading cascade file!" << std::endl;
@@ -21,25 +21,22 @@ Gui::~Gui()
 
 }
 
-
-
-// Aktualisiert das aktuelle Kamerabild und erkennt Gesichter
+// Updates the current camera frame and detects faces
 std::vector<cv::Rect> Gui::updateFrame(cv::Mat& frame) {
     if (frame.empty()) return {};
 
-
-    // Gesichtserkennung (kann für Spielerrechteck genutzt werden)
+    // Face detection (can be used for player rectangle)
     std::vector<cv::Rect> faces;
     faceCascade.detectMultiScale(frame, faces, GuiConstants::FACE_DETECT_SCALE, GuiConstants::FACE_DETECT_NEIGHBORS, GuiConstants::FACE_DETECT_FLAGS, cv::Size(60, 60));
-    //Falls kein neues Gesicht erkannt wird, wird das letzte erkannte Gesicht verwendet
+    // If no new face is detected, use the last detected face
     if (faces.empty()) {
         faces = m_lastFaces;
     }
     else {
-        m_lastFaces = faces;    // Sonst letztes Ergebnis updaten
+        m_lastFaces = faces;    // Otherwise update last result
     }
 
-    // Zeichne erkannte Gesichter
+    // Draw detected faces
     for (const auto& face : faces) {
         cv::rectangle(frame, face, getScalarFromColor(Color::GREEN), 2);
     }
@@ -47,11 +44,9 @@ std::vector<cv::Rect> Gui::updateFrame(cv::Mat& frame) {
     return faces;
 }
 
-
-
-// Liest eine Taste von der Tastatur aus (z.B. für Steuerung oder Beenden)
+// Reads a key from the keyboard (e.g., for controls or quitting)
 int Gui::getKeyboard() {
-    // Gibt den ASCII-Code der gedrückten Taste zurück, -1 falls keine Taste gedrückt
+    // Returns ASCII code of pressed key, -1 if no key pressed
     int key = cv::waitKey(10);
     return key;
 }
@@ -68,13 +63,12 @@ void Gui::showScore(cv::Mat &frame, int score)
             2);
 }
 
-
 void Gui::showGameOver(cv::Mat &frame, int score, Player player)
 {
-    // 1. Hintergrund schwarz füllen
+    // 1. Fill background with black
     frame.setTo(getScalarFromColor(Color::BLACK));
 
-    // 2. Schriftparameter
+    // 2. Font parameters
     int fontFace       = GuiConstants::FONT_FACE;
     double titleScale  = GuiConstants::GO_TITLE_SCALE;
     double textScale   = GuiConstants::GO_TEXT_SCALE;
@@ -84,31 +78,31 @@ void Gui::showGameOver(cv::Mat &frame, int score, Player player)
     int   paddingTop   = GuiConstants::GO_PADDING_TOP;
     int   lineSpacing  = GuiConstants::GO_LINE_SPACING;
 
-    // 3. „Game Over“ ganz oben zentriert
+    // 3. "Game Over" centered at top
     std::string title = "Game Over";
     cv::Size   sz    = cv::getTextSize(title, fontFace, titleScale, thickness, &baseline);
     cv::Point  org   = cv::Point((frame.cols - sz.width) / 2,
                                   paddingTop + sz.height);
     cv::putText(frame, title, org, fontFace, titleScale, red, thickness);
 
-    // 4. Score darunter
+    // 4. Score below
     std::string scoreText = "Score: " + std::to_string(score);
     sz  = cv::getTextSize(scoreText, fontFace, textScale, thickness, &baseline);
     org = cv::Point((frame.cols - sz.width) / 2,
                     org.y + lineSpacing + sz.height);
     cv::putText(frame, scoreText, org, fontFace, textScale, red, thickness);
 
-    // 5. Spielernamen darunter
+    // 5. Player name below
     std::string nameText = player.getPlayername();
     sz  = cv::getTextSize(nameText, fontFace, textScale, thickness, &baseline);
     org = cv::Point((frame.cols - sz.width) / 2,
                     org.y + lineSpacing + sz.height);
     cv::putText(frame, nameText, org, fontFace, textScale, red, thickness);
 
-    // 1) Escape-Button unten rechts
+    // 1) Escape button bottom right
     drawButton(frame, GuiConstants::BTN_ESC_TEXT, Anchor::BottomRight);
 
-    // 2) Leaderboard-Button unten links
+    // 2) Leaderboard button bottom left
     drawButton(frame, GuiConstants::BTN_LB_TEXT, Anchor::BottomLeft);
 }
 
@@ -127,11 +121,10 @@ std::vector<std::vector<std::string>> Gui::parseLeaderboardFile(const std::strin
         std::vector<std::string> tokens;
         std::stringstream ss(line);
         std::string tok;
-        // Spalte nach ';'
         while (std::getline(ss, tok, ';')) {
             tokens.push_back(tok);
         }
-        // CatchTheSquares hat 4 Tokens, DodgeTheBalls 3
+        // CatchTheSquares has 4 tokens, DodgeTheBalls has 3
         if ((mode == Playmode::CatchTheSquares && tokens.size() == 4) ||
             (mode == Playmode::DodgeTheBalls    && tokens.size() == 3))
         {
@@ -143,21 +136,21 @@ std::vector<std::vector<std::string>> Gui::parseLeaderboardFile(const std::strin
 
 void Gui::showLeaderboard(cv::Mat& frame)
 {
-    // 1) Datei auswählen
+    // 1) Select file
     const std::string filename = (m_playmode == Playmode::CatchTheSquares)
         ? "../leaderboardCatchTheSquares.txt"
         : "../leaderboardDodgeTheBalls.txt";
 
-    // 2) Einträge einlesen
+    // 2) Read entries
     auto entries = parseLeaderboardFile(filename, m_playmode);
 
-    // 3) Optional: Sortieren nach Score (Token[2]) absteigend
+    // 3) Optional: Sort by score (token[2]) descending
     std::sort(entries.begin(), entries.end(),
         [](auto& a, auto& b) {
             return std::stoi(a[2]) > std::stoi(b[2]);
         });
 
-    // 4) Grafik: Überschrift
+    // 4) Graphics: Header
     const int fontFace    = GuiConstants::FONT_FACE;
     const double scale    = GuiConstants::LB_TITLE_SCALE;
     const int thickness   = GuiConstants::GO_THICKNESS;
@@ -168,13 +161,13 @@ void Gui::showLeaderboard(cv::Mat& frame)
     cv::Point org  = { (frame.cols - sz.width) / 2, GuiConstants::LB_TITLE_Y };
     cv::putText(frame, title, org, fontFace, scale, color, thickness);
 
-    // 5) Tabellen-Kopf
+    // 5) Table header
     int startY      = org.y + 40;
     int lineHeight  = GuiConstants::LB_LINE_HEIGHT;
     int colIdX      = GuiConstants::LB_COL_ID_X;
     int colNameX    = GuiConstants::LB_COL_NAME_X;
     int colScoreX   = GuiConstants::LB_COL_SCORE_X;
-    int colExtraX   = GuiConstants::LB_COL_EXTRA_X; // für gefallene Objekte
+    int colExtraX   = GuiConstants::LB_COL_EXTRA_X; // For fallen objects
 
     cv::putText(frame, "ID",    {colIdX,   startY},    fontFace, 1.0, color, 2);
     cv::putText(frame, "Name",  {colNameX, startY},    fontFace, 1.0, color, 2);
@@ -183,7 +176,7 @@ void Gui::showLeaderboard(cv::Mat& frame)
         cv::putText(frame, "Fallen", {colExtraX, startY}, fontFace, 1.0, color, 2);
     }
 
-    // 6) Top 10 Zeilen
+    // 6) Top 10 rows
     for (size_t i = 0; i < entries.size() && i < 10; ++i) {
         int y = startY + lineHeight * (int(i) + 1);
         auto& row = entries[i];
@@ -202,7 +195,7 @@ void Gui::drawButton(cv::Mat& frame, const std::string& text, Anchor anchor)
 {
     int baseline = 0;
 
-    // Text-Größe ermitteln
+    // Get text size
     cv::Size sz = cv::getTextSize(
         text,
         GuiConstants::FONT_FACE,
@@ -211,18 +204,18 @@ void Gui::drawButton(cv::Mat& frame, const std::string& text, Anchor anchor)
         &baseline
     );
 
-    // Text-Position abhängig vom Anchor
+    // Text position based on anchor
     int x = (anchor == Anchor::BottomLeft)
             ? GuiConstants::BTN_MARGIN
             : frame.cols - sz.width - GuiConstants::BTN_MARGIN;
     int y = frame.rows - GuiConstants::BTN_MARGIN;
     cv::Point txtOrg(x, y);
 
-    // Eckpunkte des Button-Rechtecks
+    // Button rectangle corners
     cv::Point rectTL(x - GuiConstants::BTN_PAD_X, y - sz.height - GuiConstants::BTN_PAD_Y);
     cv::Point rectBR(x + sz.width + GuiConstants::BTN_PAD_X, y + GuiConstants::BTN_PAD_Y);
 
-    // Hintergrund
+    // Background
     cv::rectangle(frame, rectTL, rectBR, GuiConstants::BTN_BG_COLOR, cv::FILLED);
 
     // Text

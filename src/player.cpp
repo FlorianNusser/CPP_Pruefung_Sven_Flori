@@ -7,7 +7,7 @@
 Player::Player(const std::string &name): m_name(name)
 {
     int idSetter = 0;;
-    //playerID Datei Einlesen
+    //read playerID data
     std::ifstream in(Constants::PLAYER_ID);
     std::string idStr;
     if (in >> idStr) {
@@ -28,7 +28,7 @@ Player::Player(const std::string &name): m_name(name)
     
     idSetter ++;
     m_id = idSetter;
-    //neue PlayerID in Datei schreiben
+    //write new playerID in data
     std::ofstream out(Constants::PLAYER_ID, std::ios::trunc);
     if(!out)
     {
